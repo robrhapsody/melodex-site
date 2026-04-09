@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Song Progression Finder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero">
+      <p class="eyebrow">Chord Search Studio</p>
+      <h1>Find songs that share the same harmonic shape.</h1>
+      <p class="lede">
+        Search by song title, artist name, or a Nashville progression like <code>1m b6 b7</code>.
+        Results are ranked by exact, contains, and similar progression matches.
+      </p>
+    </section>
+
+    <section class="controls">
+      <label class="field field-with-suggestions">
+        <span>Search songs or artists</span>
+        <input id="song-query" type="text" placeholder="Example: Fast Car or Tracy Chapman">
+        <div id="song-suggestions" class="suggestions" hidden></div>
+      </label>
+
+      <label class="field">
+        <span>Search a Nashville progression</span>
+        <input id="progression-query" type="text" placeholder="Example: 1 5 6m 4 or 1m b6 b7">
+      </label>
+
+      <div class="control-row">
+        <label class="field compact">
+          <span>Section</span>
+          <select id="section-filter">
+            <option value="all">All sections</option>
+            <option value="intro">Intro</option>
+            <option value="verse">Verse</option>
+            <option value="chorus">Chorus</option>
+            <option value="bridge">Bridge</option>
+            <option value="outro">Outro</option>
+          </select>
+        </label>
+
+        <label class="field compact">
+          <span>Match mode</span>
+          <select id="match-mode">
+            <option value="mixed">Mixed ranking</option>
+            <option value="exact">Exact only</option>
+            <option value="contains">Contains only</option>
+            <option value="similar">Similar only</option>
+          </select>
+        </label>
+
+        <label class="field compact">
+          <span>Limit</span>
+          <select id="result-limit">
+            <option value="25">25</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="summary-bar">
+      <div>
+        <strong id="song-count">0</strong> songs indexed
+      </div>
+      <div id="result-summary">Type a song title or progression to start exploring.</div>
+    </section>
+
+    <section id="reference-panel" class="reference-panel" hidden>
+      <div class="reference-header">
+        <div>
+          <p class="reference-label">Reference song</p>
+          <h2 id="reference-title"></h2>
+          <p id="reference-meta" class="reference-meta"></p>
+        </div>
+      </div>
+      <div id="reference-sections" class="section-list"></div>
+    </section>
+
+    <section id="results" class="results"></section>
+  </main>
+
+  <template id="result-template">
+    <article class="result-card">
+      <div class="result-header">
+        <div>
+          <h2 class="result-title"></h2>
+          <p class="result-meta"></p>
+        </div>
+        <span class="match-pill"></span>
+      </div>
+      <p class="result-score"></p>
+      <p class="result-key"></p>
+      <div class="section-list"></div>
+    </article>
+  </template>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

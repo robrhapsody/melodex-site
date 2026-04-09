@@ -1,0 +1,691 @@
+!Audacious Band	cleaned_v2_only	yes	no	no
+10,000 Fathers	cleaned_v2_only	yes	no	no
+10,000 Reasons (Bless The Lord)	cleaned_v2_only	yes	no	no
+12Stone Worship	cleaned_v2_only	yes	no	no
+7 Hills Worship	cleaned_v2_only	yes	no	no
+Aaron Gillespie	cleaned_strict	yes	yes	no
+Aaron Keyes	cleaned_strict	yes	yes	no
+Aaron Shust	cleaned_strict	yes	yes	no
+Aaron Williams (feat. Aaron Keyes)	cleaned_v2_only	yes	no	no
+Abba (feat. Michelle Danae)	rejected	no	no	yes
+ACC Worship	cleaned_v2_only	yes	no	no
+Adam Bitter	rejected	no	no	yes
+Adrienne Liesching and Geoff Moore	rejected	no	no	yes
+After All (feat. Jonny Hupp)	rejected	no	no	yes
+After The Music Fades	cleaned_v2_only	yes	no	no
+Alan Jackson	cleaned_strict	yes	yes	no
+All About Worship · Michael Farren	cleaned_v2_only	yes	no	no
+All About Worship · Rhyan Shirley	cleaned_v2_only	yes	no	no
+All He Says I Am	rejected	no	no	yes
+All Sons & Daughters	cleaned_strict	yes	yes	no
+All Sons & Daughters · David Leonard	rejected	no	no	yes
+All Things New	cleaned_strict	yes	yes	no
+Allan	rejected	no	no	yes
+Allan Scott	rejected	no	no	yes
+Amanda Cook	cleaned_strict	yes	yes	no
+Amazing Grace (My Chains are Gone)	cleaned_v2_only	yes	no	no
+Amazing, Because It Is	rejected	no	no	yes
+Anabeth Morgan	cleaned_v2_only	yes	no	no
+Anchor Worship	cleaned_v2_only	yes	no	no
+Andrew Ehrenzeller	rejected	no	no	yes
+Andrew Peterson	cleaned_strict	yes	yes	no
+Andy & Rachel Graham	rejected	no	no	yes
+Anthem Lights	cleaned_strict	yes	yes	no
+Anthony Evans	rejected	no	no	yes
+Anthony Skinner	cleaned_strict	yes	yes	no
+Antioch Music	cleaned_v2_only	yes	no	no
+Antioch Music & Lindy Cofer	cleaned_v2_only	yes	no	no
+ARISE Worship	cleaned_v2_only	yes	no	no
+Asbury Worship Collective	cleaned_v2_only	yes	no	no
+Ascend The Hill	cleaned_strict	yes	yes	no
+Audrey Assad	cleaned_strict	yes	yes	no
+Austin & Lindsey Adamec	rejected	no	no	yes
+Awaken Generation	rejected	no	no	yes
+Awaken Worship	cleaned_v2_only	yes	no	no
+Awakening Worship	cleaned_v2_only	yes	no	no
+Battle Belongs	rejected	no	no	yes
+Bellarive	cleaned_strict	yes	yes	no
+Ben & Noelle Kilgore · David Leonard	rejected	no	no	yes
+Ben Potter	rejected	no	no	yes
+Bethany Music	cleaned_v2_only	yes	no	no
+Bethany Wohrle - Bethel	cleaned_v2_only	yes	no	no
+Bethel Music	cleaned_strict	yes	yes	no
+Bethel Music & Amanda Cook	cleaned_v2_only	yes	no	no
+Bethel Music & Brian Johnson	cleaned_v2_only	yes	no	no
+Bethel Music & Jenn Johnson	cleaned_v2_only	yes	no	no
+Bethel Music & Jeremy Riddle	cleaned_v2_only	yes	no	no
+Bethel Music & Jonathan David & Melissa Helser	cleaned_v2_only	yes	no	no
+Bethel Music & Josh Baldwin	cleaned_v2_only	yes	no	no
+Bethel Music & Kim Walker Smith	cleaned_v2_only	yes	no	no
+Bethel Music & Paul McClure	cleaned_v2_only	yes	no	no
+Bethel Music & Steffany Frizzell Gretzinger	cleaned_v2_only	yes	no	no
+Bethel Music & Steffany Gretzinger	cleaned_v2_only	yes	no	no
+Bethel Music & William Matthews	cleaned_v2_only	yes	no	no
+Bethel Music · Amanda Lindsey Cook	cleaned_v2_only	yes	no	no
+Bethel Music · Bethany Wohrle	cleaned_v2_only	yes	no	no
+Bethel Music · Brian Johnson	cleaned_v2_only	yes	no	no
+Bethel Music · Jenn Johnson	cleaned_v2_only	yes	no	no
+Bethel Music · Jeremy Riddle · Seffany Frizzell Gretzinger	cleaned_v2_only	yes	no	no
+Bethel Music · Kalley Heiligenthal	cleaned_v2_only	yes	no	no
+Bethel Music · Matt Stinton	cleaned_v2_only	yes	no	no
+Bethel Music · Steffany Frizzell Gretzinger	cleaned_v2_only	yes	no	no
+Bethel Music · William Matthews	cleaned_v2_only	yes	no	no
+Bethel Music I Leeland Mooring	cleaned_v2_only	yes	no	no
+Bethel Music I Steffany Gretzinger	cleaned_v2_only	yes	no	no
+Bethel Worship Arts	cleaned_v2_only	yes	no	no
+Big Daddy Weave	cleaned_strict	yes	yes	no
+Bigger Than	rejected	no	no	yes
+BJ Putnam	cleaned_v2_only	yes	no	no
+Boyce Vocal Band	cleaned_v2_only	yes	no	no
+Brad & Rebekah	rejected	no	no	yes
+Brady Toops	rejected	no	no	yes
+Brandon Lake	rejected	no	no	yes
+Brandon Lake · Brandon Lake · David Hislop · Matt Rash · Brendon McCoy · Lance Gatch · Cole Collins · Jordan Summers · London Gatch · Caroline Collins · Nate Davis · Destiny Zavala · David Hislop · Matthew Garber	rejected	no	no	yes
+Brandon Lake · Tasha Cobbs Leonard	rejected	no	no	yes
+Bread & Wine & Ben Smith	rejected	no	no	yes
+Breakaway Ministries	rejected	no	no	yes
+Brenton Dowdy	rejected	no	no	yes
+Brett Younker	cleaned_strict	yes	yes	no
+Bri Babineaux	cleaned_strict	yes	yes	no
+Brian and Jenn Johnson	cleaned_v2_only	yes	no	no
+Brian Doerksen	cleaned_strict	yes	yes	no
+Brian Houston	rejected	no	no	yes
+Brian Johnson	cleaned_strict	yes	yes	no
+BridgeCity	cleaned_v2_only	yes	no	no
+Bright City	cleaned_strict	yes	yes	no
+Britt Nicole	cleaned_strict	yes	yes	no
+Brooke Ligertwood	rejected	no	no	yes
+Brooke Ligertwood (feat. Brandon Lake)	rejected	no	no	yes
+Bryan & Katie Torwalt	cleaned_strict	yes	yes	no
+Build My Life	rejected	no	no	yes
+C3 SYD	cleaned_v2_only	yes	no	no
+C3 Toronto Worship	cleaned_v2_only	yes	no	no
+CAIN	rejected	no	no	yes
+CAIN · Essential Worship	cleaned_v2_only	yes	no	no
+Calvary Creative	rejected	no	no	yes
+Canvas And Clay	rejected	no	no	yes
+Canyon Hills Worship	cleaned_v2_only	yes	no	no
+Captivated (feat. Tiffany Adams & Alyssa Sohn)	rejected	no	no	yes
+Casey Darnell	cleaned_strict	yes	yes	no
+Casting Crowns	cleaned_strict	yes	yes	no
+Celebration Worship	cleaned_v2_only	yes	no	no
+Celebration Worship · Lindsey Brenner	cleaned_v2_only	yes	no	no
+Central Bible College Worship Project	cleaned_v2_only	yes	no	no
+Chapel Band	cleaned_v2_only	yes	no	no
+Charity Gayle	cleaned_v2_only	yes	no	no
+Charles Billingsley	cleaned_strict	yes	yes	no
+Charlie Hall	cleaned_strict	yes	yes	no
+Children Of Inheritance	rejected	no	no	yes
+Chris & Bethany Solyntjes	rejected	no	no	yes
+Chris McClarney	cleaned_strict	yes	yes	no
+Chris Quilala	cleaned_strict	yes	yes	no
+Chris Renzema	rejected	no	no	yes
+Chris Renzema & Moriah Hazeltine	rejected	no	no	yes
+Chris Tomlin	cleaned_strict	yes	yes	no
+Christ Community Church	cleaned_v2_only	yes	no	no
+Christ For The Nations Worship	cleaned_v2_only	yes	no	no
+Christ For The Nations Worship · Amber Trent	cleaned_v2_only	yes	no	no
+Christ For The Nations Worship · Faith Schneider	cleaned_v2_only	yes	no	no
+Christ For The Nations Worship · Gabriel Allred	cleaned_v2_only	yes	no	no
+Christ For The Nations Worship · Jessica Freeman	cleaned_v2_only	yes	no	no
+Christ For The Nations Worship · Jonathan Lewis	cleaned_v2_only	yes	no	no
+Christ For The Nations Worship · Kari Jobe	cleaned_v2_only	yes	no	no
+Christ For The Nations Worship · Keith Hulen	cleaned_v2_only	yes	no	no
+Christ For The Nations Worship · Klaus	cleaned_v2_only	yes	no	no
+Christ For The Nations Worship · Klaus · Kari Jobe	cleaned_v2_only	yes	no	no
+Christ For The Nations Worship · Lauren Farmer · Benson Eapen	rejected	no	no	yes
+Christ For The Nations Worship · Leeland Mooring	cleaned_v2_only	yes	no	no
+Christ For The Nations Worship · Rick Pino	cleaned_v2_only	yes	no	no
+Christian Cuevas	rejected	no	no	yes
+CHURCHOUSE	cleaned_v2_only	yes	no	no
+Cindy Cruse Ratcliff	rejected	no	no	yes
+Circuit Rider Music · Joshua Brennt · Eileen Walker	cleaned_v2_only	yes	no	no
+Cities Worship - Closer	cleaned_v2_only	yes	no	no
+Citipointe Worship	cleaned_v2_only	yes	no	no
+Citipointe Worship · Aaron Lucas	cleaned_v2_only	yes	no	no
+Citipointe Worship · Beau Lamshed	cleaned_v2_only	yes	no	no
+Citipointe Worship · Chardon Lewis	cleaned_v2_only	yes	no	no
+Citizens · Brian Eichelberger · Zach Bolen	cleaned_v2_only	yes	no	no
+Citizens · Chris Tomlin · Louie Giglio · Zach Bolen	cleaned_v2_only	yes	no	no
+Citizens · Zach Bolen	cleaned_v2_only	yes	no	no
+Cody Carnes	cleaned_strict	yes	yes	no
+Cody Carnes (feat. Benjamin William Hastings)	rejected	no	no	yes
+Cody Davenport	rejected	no	no	yes
+Come And Tear Down The Walls	rejected	no	no	yes
+Come Away (feat. Brock Human)	rejected	no	no	yes
+Community Music	cleaned_strict	yes	yes	no
+Copper Pointe Worship	cleaned_v2_only	yes	no	no
+Corey Voss	cleaned_v2_only	yes	no	no
+Cory Asbury	cleaned_strict	yes	yes	no
+Covenant Worship	cleaned_strict	yes	yes	no
+Covenant Worship, David & Nicole Binion	cleaned_v2_only	yes	no	no
+Cross Worship · D'Marcus Howard · Darius Byers · Troy Culbreth	rejected	no	no	yes
+Crowder	cleaned_strict	yes	yes	no
+Cultivation Generation · Jesse Meyer · Stephen Lampert · The Neverclaim · Vineyard Worship	rejected	no	no	yes
+Curate Music	cleaned_v2_only	yes	no	no
+Curt Vernon · Julie Futch	cleaned_v2_only	yes	no	no
+Dan Bremnes	cleaned_strict	yes	yes	no
+Daniel Bashta	cleaned_strict	yes	yes	no
+Danielle Munizzi	rejected	no	no	yes
+Darlene Zschech	cleaned_v2_only	yes	no	no
+David Ashley Trent	rejected	no	no	yes
+David Brymer	cleaned_strict	yes	yes	no
+David Crowder Band	cleaned_strict	yes	yes	no
+David Leonard	rejected	no	no	yes
+Deep Cries Out	cleaned_strict	yes	yes	no
+Delirious?	rejected	no	no	yes
+Derek Johnson	cleaned_strict	yes	yes	no
+Desperation Band	cleaned_strict	yes	yes	no
+Desperation Band · Jon Egan	cleaned_v2_only	yes	no	no
+Destination Worship	cleaned_v2_only	yes	no	no
+Divine Exchange (feat. Corey Voss)	rejected	no	no	yes
+Dustin Smith	cleaned_strict	yes	yes	no
+East Coast Christian Center	rejected	no	no	yes
+Eddie James	cleaned_strict	yes	yes	no
+Eddie James · Jayna Cullens · Micayla Burnes	rejected	no	no	yes
+Elevation Rhythm	cleaned_v2_only	yes	no	no
+Elevation Worship	cleaned_strict	yes	yes	no
+Elevation Worship & Brandon Lake	cleaned_v2_only	yes	no	no
+Elevation Worship · Chris Brown · Brandon Lake · Tiffany Hudson	rejected	no	no	yes
+Elevation Worship · Jonsal Barrientes	cleaned_v2_only	yes	no	no
+Elevation Worship · Steffany Gretzinger	cleaned_v2_only	yes	no	no
+Elevation Worship · Tauren Wells	cleaned_v2_only	yes	no	no
+Elevation Worship Feat. Brandon Lake, Chris Brown & Chandler Moore	cleaned_v2_only	yes	no	no
+Elevation Youth & Southland	cleaned_v2_only	yes	no	no
+Eleven32 Music	cleaned_v2_only	yes	no	no
+Elle Limebear	rejected	no	no	yes
+Emily Irene Fertig	rejected	no	no	yes
+Emu Youth & Emu Music	cleaned_v2_only	yes	no	no
+Enter The Worship Circle · 100 Portraits · Waterdeep · Don Chaffer · Lori Chaffer	rejected	no	no	yes
+Enter The Worship Circle · 100 Portraits · Waterdeep · Robin Pasley · Ben Pasley	rejected	no	no	yes
+Enter the Worship Circle · Aaron Strumpel · Robin Pasley · Tim and Laurie Thornton	rejected	no	no	yes
+EQ Worship	cleaned_v2_only	yes	no	no
+Equippers Church	cleaned_v2_only	yes	no	no
+Essential Worship	cleaned_v2_only	yes	no	no
+Ethos Church	cleaned_v2_only	yes	no	no
+Evergreen Music · Cole Bayer	cleaned_v2_only	yes	no	no
+Everything And Nothing Less	rejected	no	no	yes
+Faith	rejected	no	no	yes
+Fall	rejected	no	no	yes
+Fearless BND	cleaned_v2_only	yes	no	no
+Feast Worship	cleaned_strict	yes	yes	no
+Fee	cleaned_strict	yes	yes	no
+Fee · Casey Parnell · Corey Parnell	rejected	no	no	yes
+Fellowship Creative	cleaned_strict	yes	yes	no
+Fellowship Student Ministry Worship	cleaned_v2_only	yes	no	no
+Fike	rejected	no	no	yes
+Fill Me Up (feat. Will Reagan)	rejected	no	no	yes
+First Free Music · Aaron Luttenegger	cleaned_v2_only	yes	no	no
+Flyleaf	cleaned_strict	yes	yes	no
+For All Seasons	cleaned_strict	yes	yes	no
+for KING & COUNTRY	cleaned_strict	yes	yes	no
+Forerunner Music & Brandon Oaks	cleaned_v2_only	yes	no	no
+Forerunner Music · Cory Asbury	cleaned_v2_only	yes	no	no
+Forerunner Music · Jaye Thomas · Cory Asbury	cleaned_v2_only	yes	no	no
+Forerunner Music · Will Reagan · United Pursuit Band	cleaned_v2_only	yes	no	no
+Foursquare United Generation	rejected	no	no	yes
+Foursquare Worship	cleaned_v2_only	yes	no	no
+Francesca Battistelli	cleaned_strict	yes	yes	no
+Fred Hammond	cleaned_strict	yes	yes	no
+Freddy Rodriguez · Integrity's Hosanna! Music	cleaned_v2_only	yes	no	no
+Free Chapel	cleaned_strict	yes	yes	no
+Free Chapel · Israel Houghton · Rory Comtois	rejected	no	no	yes
+FREE CHAPEL MUSIC	cleaned_v2_only	yes	no	no
+Free Worship	cleaned_v2_only	yes	no	no
+Free Worship · Alexandria De Jesus · Anthony Gomez · Ethan Greeghory Hulse · Johan Sven Anders Asgarde · Matthew Ross Armstrong	rejected	no	no	yes
+Freedom Church	cleaned_v2_only	yes	no	no
+Freedom Worship	cleaned_v2_only	yes	no	no
+Fresh Life Worship	cleaned_v2_only	yes	no	no
+Friends Worship	cleaned_v2_only	yes	no	no
+Frontline Music	cleaned_v2_only	yes	no	no
+Frontline Worship	cleaned_v2_only	yes	no	no
+G12 Worship	cleaned_v2_only	yes	no	no
+Gaither Vocal Band	cleaned_strict	yes	yes	no
+Gateway Devotions · Cody Carnes	cleaned_v2_only	yes	no	no
+Gateway Devotions · Zachary Cheatham	cleaned_v2_only	yes	no	no
+Gateway Worship	cleaned_v2_only	yes	no	no
+Gateway Worship (feat. Claire Smith)	cleaned_v2_only	yes	no	no
+Gateway Worship · Anna Byrd	cleaned_v2_only	yes	no	no
+Gateway Worship · Kari Jobe	cleaned_v2_only	yes	no	no
+Gateway Worship · Kirsten Takape	cleaned_v2_only	yes	no	no
+Gateway Worship · Ryan Edgar · Meg Everheart	cleaned_v2_only	yes	no	no
+Gateway Worship · Thomas Miller · Kari Jobe	cleaned_v2_only	yes	no	no
+Gateway Youth	cleaned_v2_only	yes	no	no
+Generation Unleashed	cleaned_strict	yes	yes	no
+Give Me Jesus (feat. Abbie Gamboa)	rejected	no	no	yes
+God Alone (feat. Shaun Garrison & Sarah Kroger)	rejected	no	no	yes
+God Is Able	rejected	no	no	yes
+God So Loved	rejected	no	no	yes
+God, You’re So Good	rejected	no	no	yes
+Grace City	cleaned_v2_only	yes	no	no
+Grace Life Worship	cleaned_v2_only	yes	no	no
+Gratitude	cleaned_v2_only	yes	no	no
+GRAVES INTO GARDENS	cleaned_v2_only	yes	no	no
+Greater	rejected	no	no	yes
+Gungor	cleaned_strict	yes	yes	no
+Harborside Music	cleaned_v2_only	yes	no	no
+Harbourside Worship	cleaned_strict	yes	yes	no
+Harvest	rejected	no	no	yes
+Harvest Worship	cleaned_v2_only	yes	no	no
+Harvest Worship · Joshua Seller	cleaned_v2_only	yes	no	no
+Healing Is Right · Corey Voss	rejected	no	no	yes
+Here Be Lions	cleaned_strict	yes	yes	no
+Here Be Lions & Darlene Zschech	cleaned_v2_only	yes	no	no
+Highlands Worship	cleaned_strict	yes	yes	no
+Hillsong	cleaned_strict	yes	yes	no
+Hillsong Chapel · Jad Gillies	cleaned_v2_only	yes	no	no
+Hillsong UNITED	cleaned_strict	yes	yes	no
+Hillsong UNITED · Benjamin William Hastings	cleaned_v2_only	yes	no	no
+Hillsong UNITED · Brooke Ligertwood	cleaned_v2_only	yes	no	no
+Hillsong UNITED · Chris Davenport · Joel Houston	cleaned_v2_only	yes	no	no
+Hillsong UNITED · David Ware	cleaned_v2_only	yes	no	no
+Hillsong UNITED · Jad Gillies	cleaned_v2_only	yes	no	no
+Hillsong UNITED · Joel Houston · Matt Crocker	cleaned_v2_only	yes	no	no
+Hillsong UNITED · Matt Crocker	cleaned_v2_only	yes	no	no
+Hillsong UNITED · Reuben Morgan	cleaned_v2_only	yes	no	no
+Hillsong UNITED · TAYA	cleaned_v2_only	yes	no	no
+Hillsong UNITED · TAYA · Aodhán King	cleaned_v2_only	yes	no	no
+Hillsong Worship	cleaned_strict	yes	yes	no
+Hillsong Worship · Aodhán King	cleaned_v2_only	yes	no	no
+Hillsong Worship · Benjamin William Hastings	cleaned_v2_only	yes	no	no
+Hillsong Worship · Brooke Ligertwood	cleaned_v2_only	yes	no	no
+Hillsong Worship · Brooke Ligertwood · Reuben Morgan	cleaned_v2_only	yes	no	no
+Hillsong Worship · David Ware	cleaned_v2_only	yes	no	no
+Hillsong Worship · Hannah Hobbs	cleaned_v2_only	yes	no	no
+Hillsong Worship · Hannah Hobbs · Matt Crocker	cleaned_v2_only	yes	no	no
+Hillsong Worship · Hillsong Young & Free	cleaned_v2_only	yes	no	no
+Hillsong Worship · Jad Gillies	cleaned_v2_only	yes	no	no
+Hillsong Worship · Joel Houston	cleaned_v2_only	yes	no	no
+Hillsong Worship · Matt Crocker	cleaned_v2_only	yes	no	no
+Hillsong Worship · Tasha Cobbs Leonard · Brooke Ligertwood	cleaned_v2_only	yes	no	no
+Hillsong Young & Free	cleaned_strict	yes	yes	no
+Hillsong Young & Free · Alexander Pappas	cleaned_v2_only	yes	no	no
+Hillsong Young & Free · Alexander Pappas · Melodie Wagner	cleaned_v2_only	yes	no	no
+Hillsong Young & Free · Aodhán King	cleaned_v2_only	yes	no	no
+Hillsong Young & Free · Melodie Wagner	cleaned_v2_only	yes	no	no
+His Wounds	rejected	no	no	yes
+Holy Forever	rejected	no	no	yes
+Homegrown Worship	cleaned_v2_only	yes	no	no
+Hope Chapel	cleaned_v2_only	yes	no	no
+Hosanna	cleaned_strict	yes	yes	no
+House Of God, Forever	rejected	no	no	yes
+Housefires	cleaned_strict	yes	yes	no
+How Great Is Our God	cleaned_v2_only	yes	no	no
+HTC Music	cleaned_v2_only	yes	no	no
+I AM FUTURE	cleaned_strict	yes	yes	no
+I Am Not the Same	rejected	no	no	yes
+I AM THEY	cleaned_strict	yes	yes	no
+I Breathe You in, God	rejected	no	no	yes
+ICF Worship	cleaned_v2_only	yes	no	no
+ICF Worship · Debora Sita	cleaned_v2_only	yes	no	no
+ICF Worship · Luca Aprile	cleaned_v2_only	yes	no	no
+In the City	cleaned_v2_only	yes	no	no
+Influence Music · Matt Gilman	cleaned_v2_only	yes	no	no
+Influence Music · Melody Noel	cleaned_v2_only	yes	no	no
+Influence Music · Melody Noel · William Matthews	cleaned_v2_only	yes	no	no
+Influence Music · Michael Ketterer	cleaned_v2_only	yes	no	no
+Influence Music · Whitney Medina	cleaned_v2_only	yes	no	no
+Informants	rejected	no	no	yes
+InSalvation	rejected	no	no	yes
+Integrity's Hosanna! Music · Covenant Worship · Nicole Binion · Israel Houghton	rejected	no	no	yes
+Iron Bell Music	cleaned_strict	yes	yes	no
+Isla Vista Worship	cleaned_strict	yes	yes	no
+Israel & New Breed	cleaned_strict	yes	yes	no
+Israel & New Breed · BJ Putnam	rejected	no	no	yes
+Israel & New Breed · Jeremiah Woods	rejected	no	no	yes
+Israel & New Breed · Onaje Jefferson	cleaned_v2_only	yes	no	no
+Israel Houghton	cleaned_v2_only	yes	no	no
+Israel Houghton & New Breed	rejected	no	no	yes
+Jacob Cantrell & Capital City Music	cleaned_v2_only	yes	no	no
+Jake Hamilton	cleaned_strict	yes	yes	no
+Jared Anderson	cleaned_v2_only	yes	no	no
+Jarod Espy	rejected	no	no	yes
+Jason Morant	cleaned_strict	yes	yes	no
+Jason Upton	cleaned_strict	yes	yes	no
+Jaye Thomas	cleaned_strict	yes	yes	no
+Jeff Deyo · Anadara	rejected	no	no	yes
+Jeff Deyo · SonicFlood · Unknown	rejected	no	no	yes
+Jenn Johnson, Brian Johnson & Bethel Music	cleaned_v2_only	yes	no	no
+Jeremy Camp	cleaned_strict	yes	yes	no
+Jeremy Lowe	cleaned_v2_only	yes	no	no
+Jeremy Riddle	cleaned_strict	yes	yes	no
+Jesus Culture · Bryan Torwalt	rejected	no	no	yes
+Jesus Culture · Chris Quilala	cleaned_v2_only	yes	no	no
+Jesus Culture · Kim Walker	cleaned_v2_only	yes	no	no
+Jesus Culture · Melissa How	cleaned_v2_only	yes	no	no
+Jesus Culture Band/Chris Quilala	cleaned_v2_only	yes	no	no
+Jesus Culture Band/Kim Walker	cleaned_v2_only	yes	no	no
+Jesus Only You	rejected	no	no	yes
+Jesus Pursuit Church	cleaned_v2_only	yes	no	no
+Jesus, I Surrender	rejected	no	no	yes
+Jesus, Son of God	rejected	no	no	yes
+Jesus, We Love You	rejected	no	no	yes
+Jimi Cravity	cleaned_strict	yes	yes	no
+Jimmy McNeal	rejected	no	no	yes
+Jireh	cleaned_strict	yes	yes	no
+John Connor	rejected	no	no	yes
+Jon Neufeld	rejected	no	no	yes
+Jon Webster	rejected	no	no	yes
+Jonah33	rejected	no	no	yes
+Jonathan David & Melissa Helser	cleaned_strict	yes	yes	no
+Jonathan David Helser · Melissa Helser	rejected	no	no	yes
+Jonathan McReynolds	cleaned_strict	yes	yes	no
+Jonny & the Jazzuits	cleaned_v2_only	yes	no	no
+Jonny Lang	rejected	no	no	yes
+Jordan & Kristin Rippy	rejected	no	no	yes
+Jordan Howerton Band	cleaned_v2_only	yes	no	no
+Josh Baldwin	cleaned_strict	yes	yes	no
+Josh McCabe	rejected	no	no	yes
+Joy of the Lord (feat. Dante Bowe, Naomi Raine. Katie Torwalt & Mav City Gospel Choir)	rejected	no	no	yes
+Justin Jarvis	rejected	no	no	yes
+Justin Johnston	rejected	no	no	yes
+Justin Kintzel	rejected	no	no	yes
+Justin Owens	rejected	no	no	yes
+Justin Rizzo	cleaned_strict	yes	yes	no
+Justin Tweito	rejected	no	no	yes
+Kari Jobe	cleaned_strict	yes	yes	no
+Kari Jobe | Elevation Worship	cleaned_v2_only	yes	no	no
+Kaylee + Erica	rejected	no	no	yes
+Kees Kraayenoord · Reyer	rejected	no	no	yes
+Kerrie Roberts	rejected	no	no	yes
+Kim Walker	cleaned_strict	yes	yes	no
+King of My Heart	rejected	no	no	yes
+Kingdom	rejected	no	no	yes
+Kingdom Culture Worship · Bradley Riddle · Abigail Heineback	cleaned_v2_only	yes	no	no
+Kingdom Culture Worship · Jessie	cleaned_v2_only	yes	no	no
+Kings Kaleidoscope · Chadwick William Gardner	rejected	no	no	yes
+Kristene DiMarco	cleaned_strict	yes	yes	no
+Kristian Stanfill	cleaned_strict	yes	yes	no
+Kutless	cleaned_strict	yes	yes	no
+Laity	cleaned_v2_only	yes	no	no
+Lakewood Music	cleaned_v2_only	yes	no	no
+Laura Story	cleaned_strict	yes	yes	no
+Lauren Daigle	cleaned_strict	yes	yes	no
+Lawson Bates · Emily Ann Roberts	rejected	no	no	yes
+Lead	rejected	no	no	yes
+Leeland	cleaned_strict	yes	yes	no
+LeeU Worship	cleaned_v2_only	yes	no	no
+Let Me In (feat. Brock Human)	rejected	no	no	yes
+Let the Worshippers Arise	cleaned_v2_only	yes	no	no
+Liberty Campus Band	cleaned_v2_only	yes	no	no
+Liberty Worship Collective	cleaned_v2_only	yes	no	no
+Life Church Music	cleaned_v2_only	yes	no	no
+LIFE Worship	cleaned_strict	yes	yes	no
+LIFE Worship · Eby Corydon	cleaned_v2_only	yes	no	no
+Lifehouse	rejected	no	no	yes
+Lifepoint Worship	cleaned_v2_only	yes	no	no
+Lincoln Brewster	cleaned_v2_only	yes	no	no
+Lindy Conant · The Circuit Riders	cleaned_v2_only	yes	no	no
+Lion and the Lamb	rejected	no	no	yes
+Lion's Den · Bobby Forrester · Blake Wiggins	rejected	no	no	yes
+Lord, Let Your Glory Fall	rejected	no	no	yes
+Lost and Found	cleaned_strict	yes	yes	no
+Lou Fellingham	cleaned_strict	yes	yes	no
+Loud Harp	rejected	no	no	yes
+Love	rejected	no	no	yes
+Love of God	rejected	no	no	yes
+Lovechurch Worship	cleaned_v2_only	yes	no	no
+Luke + Anna Hellebronth	rejected	no	no	yes
+Lyric Video | Elevation Worship	cleaned_v2_only	yes	no	no
+LZ7	rejected	no	no	yes
+Mack Brock	cleaned_strict	yes	yes	no
+Maranatha Worship	cleaned_v2_only	yes	no	no
+Maranatha! Music	cleaned_v2_only	yes	no	no
+Maranatha! Praise Band	cleaned_v2_only	yes	no	no
+Marathon Church	cleaned_v2_only	yes	no	no
+Marie Barnett	cleaned_strict	yes	yes	no
+Mark & Sarah Tillman	rejected	no	no	yes
+Mass Anthem	rejected	no	no	yes
+Matt Bayless	cleaned_v2_only	yes	no	no
+Matt Gilman	cleaned_strict	yes	yes	no
+Matt Littlejohn Band	cleaned_v2_only	yes	no	no
+Matt Maher	cleaned_strict	yes	yes	no
+Matt Redman	cleaned_v2_only	yes	no	no
+Matt Redman · Tasha Cobbs Leonard	rejected	no	no	yes
+Maverick City & UPPERROOM	cleaned_v2_only	yes	no	no
+Maverick City Music · UPPERROOM · Dante Bowe · Elyssa Smith · Oscar Gamboa · Joel Figeora	rejected	no	no	yes
+Maverick City Music · UPPERROOM · Housefires · Dante Bowe · Maryanne J. George · Aaron Moses · Jesse Cline · Maryanne J George · Chuck Butler · Enrique Holmes	rejected	no	no	yes
+Me In Motion	rejected	no	no	yes
+Meredith Andrews	cleaned_strict	yes	yes	no
+Meredith Andrews (feat. Sarah Reeves & Chris McClarney)	rejected	no	no	yes
+Meredith Hobbs	rejected	no	no	yes
+Michael Farren	rejected	no	no	yes
+Michael Gungor	cleaned_strict	yes	yes	no
+Michael Shannon	rejected	no	no	yes
+Michael W. Smith	cleaned_strict	yes	yes	no
+Michael W. Smith · Kari Jobe	rejected	no	no	yes
+Michaela McLaird	rejected	no	no	yes
+Mighty To Save	rejected	no	no	yes
+Misty Edwards	cleaned_strict	yes	yes	no
+Montell Jordan · Victory World Music	cleaned_v2_only	yes	no	no
+Monterey Music	cleaned_v2_only	yes	no	no
+More And More	rejected	no	no	yes
+Mosaic	cleaned_strict	yes	yes	no
+Mosaic MSC	cleaned_strict	yes	yes	no
+MUTEMATH	rejected	no	no	yes
+My City Worship	cleaned_v2_only	yes	no	no
+My Jesus	rejected	no	no	yes
+Nashville Life Music · Dwan Hill	cleaned_v2_only	yes	no	no
+Nate Hale	rejected	no	no	yes
+Nathan Taylor	rejected	no	no	yes
+New Collective	cleaned_v2_only	yes	no	no
+New Hope New York	rejected	no	no	yes
+New Hope Oahu	rejected	no	no	yes
+New Hope Oahu · Jana Anguay Alcain	rejected	no	no	yes
+New Life Worship	cleaned_v2_only	yes	no	no
+New Life Worship · Integrity's Hosanna! Music	cleaned_v2_only	yes	no	no
+New Life Worship · Integrity's Hosanna! Music · Desperation Band · Ross Parsley	rejected	no	no	yes
+New Wine Worship	cleaned_v2_only	yes	no	no
+Newport	rejected	no	no	yes
+Newsboys	rejected	no	no	yes
+NewSpring Worship	cleaned_v2_only	yes	no	no
+Nichole Nordeman · Plumb	rejected	no	no	yes
+Nick Thurmond	cleaned_v2_only	yes	no	no
+NLC Worship	cleaned_v2_only	yes	no	no
+North Point Insideout Ft. Seth Condrey	rejected	no	no	yes
+North Point Worship · Casey Darnell	cleaned_v2_only	yes	no	no
+North Point Worship · Clay Finnesand	cleaned_v2_only	yes	no	no
+North Point Worship · Seth Condrey	cleaned_v2_only	yes	no	no
+North Point Worship · Todd Fields · Candi Pearson Shelton	cleaned_v2_only	yes	no	no
+Northwest Collective · The Modern Post · Dustin Kensrue	cleaned_v2_only	yes	no	no
+Norton Hall Band	cleaned_strict	yes	yes	no
+Now And Forever	rejected	no	no	yes
+O Taste and See	rejected	no	no	yes
+Oceans (Where Feet May Fail)	rejected	no	no	yes
+Oceans Above	rejected	no	no	yes
+Of the Land · Joel S. Ramirez	rejected	no	no	yes
+ONE A Worship Collective · Ryan Williams	cleaned_v2_only	yes	no	no
+One Hope Project	rejected	no	no	yes
+one sonic society	cleaned_v2_only	yes	no	no
+One Thing Remains	rejected	no	no	yes
+Only King Forever (Radio Edit)	rejected	no	no	yes
+Open Heaven	cleaned_v2_only	yes	no	no
+Our God	rejected	no	no	yes
+Passion · Charlie Hall	rejected	no	no	yes
+Passion · Chris Tomlin	cleaned_v2_only	yes	no	no
+Passion · Chris Tomlin · Christy Nockels	cleaned_v2_only	yes	no	no
+Passion · Chris Tomlin · Matt Redman	cleaned_v2_only	yes	no	no
+Passion · Kristian Stanfill	cleaned_v2_only	yes	no	no
+Pat Barrett	cleaned_v2_only	yes	no	no
+Paul Baloche	rejected	no	no	yes
+Pearl City Worship	cleaned_v2_only	yes	no	no
+People & Songs	rejected	no	no	yes
+Phil Wickham	cleaned_v2_only	yes	no	no
+Phil Wickham · Chris Quilala	rejected	no	no	yes
+Phil Wickham · Peter Kipley	rejected	no	no	yes
+Phil Wickham · Travis Ryan	rejected	no	no	yes
+Planetshakers	cleaned_v2_only	yes	no	no
+Planetshakers · Israel Houghton	cleaned_v2_only	yes	no	no
+Pocket Full Of Rocks	cleaned_v2_only	yes	no	no
+Praise Him	rejected	no	no	yes
+Press Play	rejected	no	no	yes
+Pursue Worship	cleaned_v2_only	yes	no	no
+Rachael Skrobot	cleaned_v2_only	yes	no	no
+Raise a Hallelujah	rejected	no	no	yes
+Ramp Worship	cleaned_v2_only	yes	no	no
+Red Rocks Worship	cleaned_v2_only	yes	no	no
+Rend Collective	cleaned_v2_only	yes	no	no
+Ricardo Sanchez	cleaned_v2_only	yes	no	no
+Rich Dicas & KXC	rejected	no	no	yes
+Rick Cua	rejected	no	no	yes
+Rick Pino	cleaned_v2_only	yes	no	no
+Rick Pino · Kari Jobe	rejected	no	no	yes
+Riley Erin	rejected	no	no	yes
+Rising Sun	rejected	no	no	yes
+Rising Worship · Wes Compton · Jake Ledwell	cleaned_v2_only	yes	no	no
+Rita Springer	cleaned_v2_only	yes	no	no
+River Valley Worship · Clinton Allen · Wesley Schrock	cleaned_v2_only	yes	no	no
+River Valley Worship · KK Brink · Ryan Williams · Evan John · Clinton Allen · Michael Fatkin	rejected	no	no	yes
+River Valley Worship · Ryan Williams	cleaned_v2_only	yes	no	no
+River Valley Worship · Ryan Williams · Evan John · Wesley Schrock · Aaron Johnson · Michael Fatkin	rejected	no	no	yes
+River Valley Worship · Ryan Williams · KK Strasburg	cleaned_v2_only	yes	no	no
+River Valley Worship · Wesley Schrock · Evan John · Aaron Johnson · Ryan Williams	rejected	no	no	yes
+River Valley Worship · Wesley Schrock · Evan John · Michael Fatkin · Clinton Allen · Ryan Williams	rejected	no	no	yes
+Rivers & Robots · David Brymer	rejected	no	no	yes
+Rob Eisner	rejected	no	no	yes
+Rock City Worship	cleaned_v2_only	yes	no	no
+Rootsdeepdown · Ethan & Chelsea Fenton	rejected	no	no	yes
+Roy Fields	rejected	no	no	yes
+Run51	rejected	no	no	yes
+Running In Circles (feat. Will Reagan)	rejected	no	no	yes
+Rush Worship	cleaned_v2_only	yes	no	no
+Ryan Axtell	rejected	no	no	yes
+Ryan Ellis	cleaned_v2_only	yes	no	no
+Saddleback Worship	cleaned_v2_only	yes	no	no
+Sagebrush Music	cleaned_v2_only	yes	no	no
+Sagu Worship	cleaned_v2_only	yes	no	no
+Sarah Emerson	rejected	no	no	yes
+Sarah McMillan	rejected	no	no	yes
+Scott Blackwell	rejected	no	no	yes
+Sean Feucht	cleaned_v2_only	yes	no	no
+See His Love (feat. Tim Hughes)	rejected	no	no	yes
+Selah	cleaned_v2_only	yes	no	no
+Seph Schlueter	rejected	no	no	yes
+Set Your Seal Upon My Heart	rejected	no	no	yes
+SEU Worship	cleaned_v2_only	yes	no	no
+SEU Worship · David Ryan Cook · Ryan Len Johnson	cleaned_v2_only	yes	no	no
+SEU Worship · Ryan Len Johnson	cleaned_v2_only	yes	no	no
+Seventh Day Slumber	cleaned_v2_only	yes	no	no
+Seventh Day Slumber · Joel Houston	rejected	no	no	yes
+Shane & Shane	cleaned_v2_only	yes	no	no
+Shane Barnard · Bob Fitts · Shane Barnard	rejected	no	no	yes
+Shane Everett	cleaned_v2_only	yes	no	no
+Simple	rejected	no	no	yes
+Since Your Love (feat. Brandon Hampton)	rejected	no	no	yes
+SisterBrother	rejected	no	no	yes
+Skillet	cleaned_v2_only	yes	no	no
+Skull Church	cleaned_v2_only	yes	no	no
+Skyhook	rejected	no	no	yes
+So Good to Me	rejected	no	no	yes
+Sojourn	rejected	no	no	yes
+Soul City Worship · Patrick Mayberry	cleaned_v2_only	yes	no	no
+Soul Survivor	rejected	no	no	yes
+Southside Worship	cleaned_v2_only	yes	no	no
+SOUTHVILLE	rejected	no	no	yes
+Sovereign Grace Music	cleaned_v2_only	yes	no	no
+Starfield	rejected	no	no	yes
+Stars Go Dim	rejected	no	no	yes
+Steffany Gretzinger	rejected	no	no	yes
+Stephen Miller	rejected	no	no	yes
+Stephen Witt	rejected	no	no	yes
+Stew Mcilrath	rejected	no	no	yes
+Stockholm Worship	cleaned_v2_only	yes	no	no
+Stronger	rejected	no	no	yes
+Summit Collective	cleaned_v2_only	yes	no	no
+Summit Worship	cleaned_v2_only	yes	no	no
+TFH Worship	cleaned_v2_only	yes	no	no
+The Almost	rejected	no	no	yes
+The Belonging Co (feat. David Dennis)	rejected	no	no	yes
+The Belonging Co · Cody Carnes	rejected	no	no	yes
+The Belonging Co · Daniella Mason	rejected	no	no	yes
+The Belonging Co · Henry Seeley	rejected	no	no	yes
+The Belonging Co · Natalie Grant	rejected	no	no	yes
+The Beloved Music	cleaned_v2_only	yes	no	no
+The Church Will Sing	cleaned_v2_only	yes	no	no
+The Classic City Collective	cleaned_v2_only	yes	no	no
+The Crossing Collective	cleaned_v2_only	yes	no	no
+The Digital Age	rejected	no	no	yes
+The Eagle and Child	cleaned_v2_only	yes	no	no
+The Fifth Service	rejected	no	no	yes
+The Harvest · Tracy Minor	rejected	no	no	yes
+The Heart Of Worship	cleaned_v2_only	yes	no	no
+The Michael Gungor Band	cleaned_v2_only	yes	no	no
+The Museum	rejected	no	no	yes
+The Neverclaim	cleaned_v2_only	yes	no	no
+The New Collective · Chelsea Phillips	cleaned_v2_only	yes	no	no
+The Outsiders	cleaned_v2_only	yes	no	no
+The Potter's House · Planetshakers	cleaned_v2_only	yes	no	no
+The Rock Music · Steele Croswhite	cleaned_v2_only	yes	no	no
+The Royal Royal	cleaned_v2_only	yes	no	no
+The Silver Pages · Latifah Alattas	rejected	no	no	yes
+The Simple Truth (feat. Ruth Preston)	rejected	no	no	yes
+The Spark	rejected	no	no	yes
+The Summit Church · Kat Robertson	cleaned_v2_only	yes	no	no
+The Village Church · Grant McCurdy · Michael Bleecker · Jeff Capps	rejected	no	no	yes
+The Voyage	rejected	no	no	yes
+The Well MSC	rejected	no	no	yes
+The Worship Initiative · Shane & Shane · Bethany Barnard · Adam Westlake · Ross Fishburn	rejected	no	no	yes
+The Worship Initiative and Shane & Shane	cleaned_v2_only	yes	no	no
+Thine Worship	cleaned_v2_only	yes	no	no
+Third Day	cleaned_v2_only	yes	no	no
+Throne Room (feat. WangJin Yoon) (Original Recording)	rejected	no	no	yes
+Tim Hughes	cleaned_v2_only	yes	no	no
+Tim Timmons	rejected	no	no	yes
+To You Be the Glory	rejected	no	no	yes
+Todd Agnew	rejected	no	no	yes
+Tom Eccleshall & KXC	rejected	no	no	yes
+Tommee Profitt Band feat. Brooke Griffith	cleaned_v2_only	yes	no	no
+Travis Ryan	cleaned_v2_only	yes	no	no
+Tree63	rejected	no	no	yes
+Trevor Walker	rejected	no	no	yes
+TRIBL MUSIC	cleaned_v2_only	yes	no	no
+Umobile Worship	cleaned_v2_only	yes	no	no
+Upper Room Music	cleaned_v2_only	yes	no	no
+UPPERROOM · Abbie Gamboa	rejected	no	no	yes
+UPPERROOM · Elyssa Figueroa	rejected	no	no	yes
+Urban Rescue	rejected	no	no	yes
+Vertical Worship	cleaned_v2_only	yes	no	no
+Vertical Worship · Andi Rozier	cleaned_v2_only	yes	no	no
+Vertical Worship · Heather Headley	cleaned_v2_only	yes	no	no
+Vertical Worship · Jon Guerra	cleaned_v2_only	yes	no	no
+Vertical Worship · Meredith Andrews	cleaned_v2_only	yes	no	no
+Vicky Beeching	rejected	no	no	yes
+VICTORY	cleaned_v2_only	yes	no	no
+Vineyard Worship	cleaned_v2_only	yes	no	no
+Vineyard Worship · Anabeth Morgan	cleaned_v2_only	yes	no	no
+Vineyard Worship · Andy Hatherly	cleaned_v2_only	yes	no	no
+Vineyard Worship · Dana Masters	cleaned_v2_only	yes	no	no
+Vineyard Worship · Joshua Miller	cleaned_v2_only	yes	no	no
+Vineyard Worship · Sarah Elmer	cleaned_v2_only	yes	no	no
+Voices of Lee	rejected	no	no	yes
+VOUS Worship	cleaned_v2_only	yes	no	no
+Waiting Here For You (feat. Sarah Bird)	rejected	no	no	yes
+Warr Acres	rejected	no	no	yes
+Watermark Worship	cleaned_v2_only	yes	no	no
+Wave Church Worship	cleaned_v2_only	yes	no	no
+We Love Your Name (feat. the Cry)	rejected	no	no	yes
+We the Union	rejected	no	no	yes
+Will Morrison	rejected	no	no	yes
+Will Reagan	cleaned_v2_only	yes	no	no
+Will Reagan & United Pursuit	rejected	no	no	yes
+William Matthews · Lisa Gungor	rejected	no	no	yes
+William McDowell	cleaned_v2_only	yes	no	no
+William McDowell · Danny Gokey	rejected	no	no	yes
+Wind & Embers	rejected	no	no	yes
+WordShip	cleaned_v2_only	yes	no	no
+Worship Central	cleaned_v2_only	yes	no	no
+Worship Central · Ben Cantelon	cleaned_v2_only	yes	no	no
+Worship Central · Luke Hellebronth	cleaned_v2_only	yes	no	no
+Worship Central · Nick Herbert	cleaned_v2_only	yes	no	no
+Worship Central Australia	cleaned_v2_only	yes	no	no
+Worship Song Lyrics	cleaned_v2_only	yes	no	no
+Yes I Will	rejected	no	no	yes
+Yet Not I, But Through Christ In Me	rejected	no	no	yes
+You And You Alone	rejected	no	no	yes
+You Satisfy (feat. Elyssa Smith)	rejected	no	no	yes
+Young Oceans	rejected	no	no	yes
+Your Promises	rejected	no	no	yes
+YouthQuake Worship	cleaned_v2_only	yes	no	no
+Zac Hicks + Cherry Creek Worship	cleaned_v2_only	yes	no	no
+Zach Neese	cleaned_v2_only	yes	no	no
+Zealand Worship	cleaned_v2_only	yes	no	no

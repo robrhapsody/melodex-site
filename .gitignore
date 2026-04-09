@@ -1,0 +1,15 @@
+# Build/runtime
+__pycache__/
+*.pyc
+.vercel/
+
+# Local app/data artifacts
+data/processed/melodex_phase1.sqlite
+
+# Raw source files too large for standard GitHub push
+data/raw/chordonomicon.csv
+data/raw/spotify_metadata.csv
+
+# Local Codex env secrets
+.codex/environments/environment.toml
+

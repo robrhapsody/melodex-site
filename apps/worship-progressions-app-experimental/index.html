@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flowset</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top-nav">
+    <div class="brand">
+      <img class="brand-logo" src="assets/flowset-f-logo.png" alt="Flowset F logo">
+      <div class="brand-copy">
+        <span class="brand-title">Flowset</span>
+        <span class="brand-subtitle">Worship Set Flow Assistant</span>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a class="active" href="#">Library</a>
+      <a href="#">Search</a>
+      <a href="#">Mashup</a>
+      <a href="#">Setlist</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero-banner">
+      <img src="assets/flowset-hero-full.png" alt="Flowset hero">
+    </section>
+
+    <section class="controls">
+      <label class="field field-with-suggestions">
+        <span>Search songs or artists</span>
+        <input id="song-query" type="text" placeholder="Start with a song, artist, or chord progression">
+        <div id="song-suggestions" class="suggestions" hidden></div>
+      </label>
+
+      <label class="field">
+        <span>Search a progression</span>
+        <input id="progression-query" type="text" placeholder="Example: 4 5 6m or 1 5 6m 4">
+      </label>
+
+      <p class="search-description">
+        Flowset analyzes chord progressions using the Nashville Number System to find songs with similar harmonic movement.
+        When you search, we match sections like chorus, verse, or bridge to help you transition smoothly between songs.
+      </p>
+
+      <div class="control-row">
+        <label class="field compact">
+          <span>Catalog</span>
+          <select id="catalog-filter">
+            <option value="worship_strict" selected>Worship</option>
+            <option value="broad_christian_worship">Broad Christian / Worship</option>
+            <option value="all">All songs</option>
+          </select>
+        </label>
+
+        <label class="field compact">
+          <span>Section</span>
+          <select id="section-filter">
+            <option value="all">All sections</option>
+            <option value="intro">Intro</option>
+            <option value="verse">Verse</option>
+            <option value="pre_chorus">Pre-chorus</option>
+            <option value="chorus">Chorus</option>
+            <option value="bridge">Bridge</option>
+            <option value="tag">Tag</option>
+            <option value="interlude">Interlude</option>
+            <option value="solo">Solo</option>
+            <option value="instrumental">Instrumental</option>
+            <option value="full_song">Full song (unlabeled)</option>
+            <option value="outro">Outro</option>
+          </select>
+        </label>
+
+        <label class="field compact">
+          <span>Match mode</span>
+          <select id="match-mode">
+            <option value="mixed">Mixed ranking</option>
+            <option value="exact">Exact only</option>
+            <option value="contains">Contains only</option>
+            <option value="similar">Similar only</option>
+            <option value="flexible">Passing-chord aware</option>
+          </select>
+        </label>
+
+        <label class="field compact">
+          <span>Limit</span>
+          <select id="result-limit">
+            <option value="15" selected>15</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="summary-bar">
+      <div>
+        <strong id="song-count">0</strong> songs indexed
+      </div>
+      <div id="result-summary">Pick a song or progression to discover smooth transitions into your next song.</div>
+    </section>
+
+    <section id="reference-panel" class="reference-panel" hidden>
+      <div class="reference-header">
+        <div>
+          <p class="reference-label">Reference song</p>
+          <h2 id="reference-title"></h2>
+          <p id="reference-meta" class="reference-meta"></p>
+        </div>
+      </div>
+      <div id="reference-sections" class="flow-list"></div>
+    </section>
+
+    <section id="results" class="results"></section>
+    <footer class="page-footer">Built for worship leaders &bull; Optimized for real set transitions</footer>
+  </main>
+
+  <template id="result-template">
+    <article class="result-card">
+      <div class="result-header">
+        <div>
+          <h2 class="result-title"></h2>
+          <p class="result-meta"></p>
+        </div>
+        <span class="match-pill"></span>
+      </div>
+      <p class="result-score"></p>
+      <p class="result-detail"></p>
+      <p class="result-key"></p>
+      <div class="score-breakdown"></div>
+      <div class="flow-list"></div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
