@@ -11,6 +11,21 @@ from typing import Iterable
 
 SECTION_TAG_PATTERN = re.compile(r"<([^>]+)>")
 ORDINAL_SUFFIX_PATTERN = re.compile(r"_(\d+)$")
+CHORD_HEAD_PATTERN = re.compile(r"^([A-Ga-g])((?:#|b|s(?!us))?)(.*)$")
+BASS_HEAD_PATTERN = re.compile(r"^([A-Ga-g])((?:#|b|s(?!us))?)")
+KEY_DETECTION_SECTION_PRIORITY = (
+    "verse",
+    "pre_chorus",
+    "chorus",
+    "bridge",
+    "tag",
+    "intro",
+    "outro",
+    "interlude",
+    "instrumental",
+    "solo",
+)
+KEY_DETECTION_MAX_SEQUENCES_PER_TYPE = 2
 
 NOTE_TO_SEMITONE = {
     "C": 0,
@@ -143,6 +158,30 @@ def normalize_note_name(note: str | None) -> str | None:
     return root
 
 
+def parse_chord_head(text: str | None) -> tuple[str, str] | None:
+    if not text:
+        return None
+    match = CHORD_HEAD_PATTERN.match(text.strip())
+    if not match:
+        return None
+    note = normalize_note_name(f"{match.group(1)}{match.group(2)}")
+    if note not in NOTE_TO_SEMITONE:
+        return None
+    return note, match.group(3) or ""
+
+
+def parse_bass_head(text: str | None) -> str | None:
+    if not text:
+        return None
+    match = BASS_HEAD_PATTERN.match(text.strip())
+    if not match:
+        return None
+    note = normalize_note_name(f"{match.group(1)}{match.group(2)}")
+    if note not in NOTE_TO_SEMITONE:
+        return None
+    return note
+
+
 def get_note_semitone(note: str | None) -> int | None:
     if not note:
         return None
@@ -165,21 +204,19 @@ def normalize_chord_token(token: str | None) -> str | None:
     main = parts[0]
     bass = parts[1] if len(parts) > 1 else None
 
-    match = re.match(r"^([A-Ga-g])([#bs]?)(.*)$", main)
-    if not match:
+    head = parse_chord_head(main)
+    if not head:
         return None
 
-    root = normalize_note_name(f"{match.group(1)}{match.group(2)}")
-    tail = (match.group(3) or "").lower()
+    root, tail_text = head
+    tail = tail_text.lower()
     is_minor = bool(re.match(r"^m(?!aj)", tail) or "min" in tail)
     normalized = f"{root}m" if is_minor else root
 
     if bass:
-        bass_match = re.match(r"^([A-Ga-g])([#bs]?)", bass)
-        if bass_match:
-            bass_root = normalize_note_name(f"{bass_match.group(1)}{bass_match.group(2)}")
-            if bass_root:
-                normalized = f"{normalized}/{bass_root}"
+        bass_root = parse_bass_head(bass)
+        if bass_root:
+            normalized = f"{normalized}/{bass_root}"
 
     return normalized
 
@@ -277,6 +314,48 @@ def chord_objects_from_sequences(sequences: Iterable[str]) -> list[dict]:
                 }
             )
     return chord_objects
+
+
+def select_key_detection_sequences(section_entries: list[dict], normalized_full: str) -> list[str]:
+    if not section_entries:
+        return [normalized_full] if normalized_full else []
+
+    grouped: dict[str, list[str]] = defaultdict(list)
+    for entry in section_entries:
+        sequence = normalize_whitespace(entry.get("normalized_chords"))
+        if not sequence:
+            continue
+
+        raw_section_type = normalize_whitespace(entry.get("section_type_estimated") or entry.get("base_name") or "unknown").lower()
+        section_type = re.sub(r"[\s-]+", "_", raw_section_type)
+        token_count = len(sequence.split())
+        if token_count < 2 and section_type in {"intro", "outro", "interlude", "instrumental"}:
+            continue
+
+        bucket = grouped[section_type]
+        if sequence not in bucket:
+            bucket.append(sequence)
+
+    selected: list[str] = []
+    seen: set[str] = set()
+
+    for section_type in KEY_DETECTION_SECTION_PRIORITY:
+        for sequence in grouped.pop(section_type, [])[:KEY_DETECTION_MAX_SEQUENCES_PER_TYPE]:
+            if sequence in seen:
+                continue
+            selected.append(sequence)
+            seen.add(sequence)
+
+    for section_type in sorted(grouped.keys()):
+        for sequence in grouped[section_type][:KEY_DETECTION_MAX_SEQUENCES_PER_TYPE]:
+            if sequence in seen:
+                continue
+            selected.append(sequence)
+            seen.add(sequence)
+
+    if selected:
+        return selected
+    return [normalized_full] if normalized_full else []
 
 
 def get_key_score(chords: list[dict], tonic: int, minor_mode: bool) -> float:
@@ -913,9 +992,8 @@ def build_phase1_database(
             raw_chords_full = clean_string(row.get("chords")) or ""
             normalized_full = clean_chord_sequence(raw_chords_full)
             section_entries = parse_all_sections(raw_chords_full)
-            chord_objects = chord_objects_from_sequences(
-                [entry["normalized_chords"] for entry in section_entries] if section_entries else [normalized_full]
-            )
+            key_detection_sequences = select_key_detection_sequences(section_entries, normalized_full)
+            chord_objects = chord_objects_from_sequences(key_detection_sequences)
             detected_key = detect_key(chord_objects)
             parse_status = derive_parse_status(section_entries, normalized_full)
 

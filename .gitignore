@@ -2,8 +2,11 @@
 __pycache__/
 *.pyc
 .vercel/
+apps/worship-progressions-app-experimental/node_modules/
+tmp_progression_451.json
 
 # Local app/data artifacts
+data/
 data/processed/melodex_phase1.sqlite
 
 # Raw source files too large for standard GitHub push

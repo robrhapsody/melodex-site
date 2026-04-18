@@ -52,6 +52,7 @@ SECTION_COLS = [
 ]
 
 APPEND_THRESHOLD = 0.35
+CHORD_HEAD_PATTERN = re.compile(r"^([A-Ga-g])((?:#|b|s(?!us))?)(.*)$")
 
 
 def normalize_text(value: str | None) -> str:
@@ -80,6 +81,18 @@ def normalize_note_name(value: str | None) -> str | None:
     if suffix == "b":
         return f"{root}b"
     return root
+
+
+def parse_chord_head(token: str | None) -> tuple[str, str] | None:
+    if not token:
+        return None
+    match = CHORD_HEAD_PATTERN.match(token.strip())
+    if not match:
+        return None
+    note = normalize_note_name(f"{match.group(1)}{match.group(2)}")
+    if note not in NOTE_TO_SEMITONE:
+        return None
+    return note, match.group(3) or ""
 
 
 def parse_key_info(key_text: str) -> tuple[int | None, int | None, str]:
@@ -113,14 +126,11 @@ def normalize_chord_token(token: str) -> tuple[int, bool] | None:
         return None
     text = text.rstrip(")")
     text = text.lstrip("(")
-    text = text.replace("sus4", "sus").replace("sus2", "sus")
-    match = re.match(r"^([A-Ga-g])([#bs]?)(.*)$", text)
-    if not match:
+    head = parse_chord_head(text)
+    if not head:
         return None
-    note = normalize_note_name(f"{match.group(1)}{match.group(2)}")
-    if note not in NOTE_TO_SEMITONE:
-        return None
-    tail = (match.group(3) or "").lower()
+    note, tail_text = head
+    tail = tail_text.lower()
     is_minor = bool(re.match(r"^m(?!aj)", tail) or "min" in tail)
     return NOTE_TO_SEMITONE[note], is_minor
 

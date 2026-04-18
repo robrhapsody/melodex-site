@@ -14,6 +14,7 @@
   const resultSummary = document.getElementById("result-summary");
   const resultsContainer = document.getElementById("results");
   const resultTemplate = document.getElementById("result-template");
+  const modeHelpText = document.getElementById("mode-help-text");
 
   const state = {
     stats: { counts: {} },
@@ -31,6 +32,11 @@
     worship_strict: "Worship",
   };
   const flowPriority = ["pre_chorus", "chorus", "bridge", "tag", "interlude", "verse", "intro", "outro", "full_song"];
+  const modeDescriptions = {
+    balanced: "Balanced: keeps chord order and returns close in-order matches.",
+    strict: "Strict sequence: progression must appear in order (slash chords still map to base chords).",
+    flexible: "Flexible (default): passing/slash chords are simplified (for example, 1/3 can match 1).",
+  };
 
   function normalizeText(text) {
     return (text || "")
@@ -41,6 +47,27 @@
 
   function getCatalogLabel(catalog) {
     return catalogLabels[catalog] || "Current catalog";
+  }
+
+  function getApiMatchMode(selectedMode) {
+    if (selectedMode === "strict") {
+      return "contains";
+    }
+    if (selectedMode === "balanced") {
+      return "mixed";
+    }
+    if (selectedMode === "flexible") {
+      return "flexible";
+    }
+    return "flexible";
+  }
+
+  function updateModeHelpText() {
+    if (!modeHelpText) {
+      return;
+    }
+    const selectedMode = matchModeSelect.value || "balanced";
+    modeHelpText.textContent = modeDescriptions[selectedMode] || modeDescriptions.balanced;
   }
 
   function updateSongCount(count) {
@@ -93,6 +120,8 @@
       { label: "Section", value: result.sectionScore },
       { label: "Worship", value: result.worshipRelevanceScore },
       { label: "BPM", value: result.bpmScore },
+      { label: "Familiarity", value: result.familiarityScore },
+      { label: "Structure", value: result.structurePenalty },
     ];
 
     for (const part of parts) {
@@ -107,6 +136,13 @@
       bpmDiffChip.className = "score-chip";
       bpmDiffChip.innerHTML = `Δ BPM: <strong>${result.bpmDifference.toFixed(1)}</strong>`;
       wrapper.appendChild(bpmDiffChip);
+    }
+
+    if (result.usedCoreProgression) {
+      const coreChip = document.createElement("span");
+      coreChip.className = "score-chip";
+      coreChip.innerHTML = `Core match: <strong>passing chords tolerated</strong>`;
+      wrapper.appendChild(coreChip);
     }
 
     return wrapper;
@@ -171,9 +207,34 @@
   async function fetchJson(url, controller) {
     const response = await fetch(url, { signal: controller ? controller.signal : undefined });
     if (!response.ok) {
-      throw new Error(`Request failed: ${response.status}`);
+      let message = `Request failed: ${response.status}`;
+      try {
+        const payload = await response.json();
+        if (payload && payload.error) {
+          message = payload.error;
+        }
+      } catch (_error) {
+        // Fall back to the status-based message if the response is not JSON.
+      }
+      throw new Error(message);
     }
     return response.json();
+  }
+
+  function formatQueryInterpretation(queryInterpretation) {
+    if (!queryInterpretation) {
+      return "";
+    }
+
+    if (queryInterpretation.inputType === "chords") {
+      const alternatives = Array.isArray(queryInterpretation.alternativeKeys)
+        ? queryInterpretation.alternativeKeys.map((item) => item.key).filter(Boolean).slice(0, 2)
+        : [];
+      const altText = alternatives.length ? ` Other plausible keys: ${alternatives.join(", ")}.` : "";
+      return `Interpreted "${queryInterpretation.rawInput}" in ${queryInterpretation.detectedKey} as ${queryInterpretation.nashvilleProgression}.${altText}`;
+    }
+
+    return `Searching Nashville progression ${queryInterpretation.nashvilleProgression}.`;
   }
 
   async function loadStats() {
@@ -227,14 +288,15 @@
     if (!results.length) {
       resultSummary.textContent = context.referenceSong
         ? `No similar progressions found for ${context.referenceSong.track} by ${context.referenceSong.artist} in ${getCatalogLabel(state.catalog)}.`
-        : `No songs matched the current progression search in ${getCatalogLabel(state.catalog)}.`;
+        : `No songs matched the current progression search in ${getCatalogLabel(state.catalog)}. ${formatQueryInterpretation(context.queryInterpretation)}`.trim();
       return;
     }
 
     if (context.referenceSong) {
       resultSummary.textContent = `Showing ${results.length} songs ranked by progression similarity to ${context.referenceSong.track} by ${context.referenceSong.artist} in ${getCatalogLabel(state.catalog)}.`;
     } else {
-      resultSummary.textContent = `Showing ${results.length} songs ranked by progression similarity to "${context.progressionQuery}" in ${getCatalogLabel(state.catalog)}.`;
+      const interpretationText = formatQueryInterpretation(context.queryInterpretation);
+      resultSummary.textContent = `Showing ${results.length} songs ranked by progression similarity to "${context.progressionQuery}" in ${getCatalogLabel(state.catalog)}.${interpretationText ? ` ${interpretationText}` : ""}`;
     }
 
     const fragment = document.createDocumentFragment();
@@ -246,7 +308,23 @@
       node.querySelector(".match-pill").textContent = result.matchLabel;
       node.querySelector(".result-score").textContent = `Matched ${result.sectionLabel} against reference ${result.referenceSection}. Score: ${result.score}.`;
       node.querySelector(".result-detail").textContent = result.matchDetail;
-      node.querySelector(".result-key").textContent = result.key ? `Detected key: ${result.key}` : "Detected key unavailable.";
+      node.querySelector(".result-key").textContent = result.key ? `Song key: ${result.key}` : "Song key unavailable.";
+      const progressionLines = [];
+      if (result.matchedProgressionNashville) {
+        progressionLines.push(`Nashville: ${result.matchedProgressionNashville}`);
+      }
+      if (result.matchedProgressionInSongKey) {
+        progressionLines.push(`In ${result.key || "song key"}: ${result.matchedProgressionInSongKey}`);
+      }
+      if (
+        context.queryInterpretation
+        && context.queryInterpretation.inputType === "chords"
+        && context.queryInterpretation.detectedKey
+        && result.matchedProgressionInInputKey
+      ) {
+        progressionLines.push(`In ${context.queryInterpretation.detectedKey}: ${result.matchedProgressionInInputKey}`);
+      }
+      node.querySelector(".result-progressions").textContent = progressionLines.join("\n");
       node.querySelector(".score-breakdown").appendChild(renderScoreBreakdown(result));
 
       const sectionList = node.querySelector(".flow-list");
@@ -367,7 +445,8 @@
     const songQuery = songQueryInput.value.trim();
     const progressionQuery = progressionQueryInput.value.trim();
     const selectedSection = sectionFilter.value;
-    const mode = matchModeSelect.value;
+    const selectedMode = matchModeSelect.value;
+    const mode = getApiMatchMode(selectedMode);
     const limit = Number.parseInt(resultLimitSelect.value, 10) || 15;
 
     if (!progressionQuery && !state.selectedReferenceSongId) {
@@ -393,8 +472,9 @@
       updateSongCount(payload.catalogCount);
       const context = {
         hasSearch: Boolean(payload.hasSearch),
-        progressionQuery: payload.progressionQuery || progressionQuery,
+        progressionQuery: payload.progressionQueryRaw || progressionQuery,
         referenceSong: payload.referenceSong || null,
+        queryInterpretation: payload.queryInterpretation || null,
       };
 
       if (!payload.referenceSong && !progressionQuery && state.selectedReferenceSongId) {
@@ -409,7 +489,7 @@
       }
       renderReferencePanel(null, selectedSection);
       resultsContainer.innerHTML = "";
-      resultSummary.textContent = "The search request failed. Please try again.";
+      resultSummary.textContent = error.message || "The search request failed. Please try again.";
     }
   }
 
@@ -467,14 +547,19 @@
   });
 
   sectionFilter.addEventListener("change", search);
-  matchModeSelect.addEventListener("change", search);
+  matchModeSelect.addEventListener("change", () => {
+    updateModeHelpText();
+    search();
+  });
   resultLimitSelect.addEventListener("change", search);
 
   (async function init() {
     try {
       await loadStats();
+      updateModeHelpText();
       resultSummary.textContent = "Pick a song or progression to discover smooth transitions into your next song.";
     } catch (error) {
+      updateModeHelpText();
       resultSummary.textContent = "The lab API is unavailable. Restart the experimental app server and try again.";
     }
   })();
