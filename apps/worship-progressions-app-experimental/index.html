@@ -37,12 +37,12 @@
 
       <label class="field">
         <span>Search a progression</span>
-        <input id="progression-query" type="text" placeholder="Example: 4 5 6m or 1 5 6m 4">
+        <input id="progression-query" type="text" placeholder="Example: C D Em or 4 5 6m">
       </label>
 
       <p class="search-description">
         Flowset analyzes chord progressions using the Nashville Number System to find songs with similar harmonic movement.
-        When you search, we match sections like chorus, verse, or bridge to help you transition smoothly between songs.
+        You can search with Nashville numbers or plain chord letters, and Flowset will normalize the progression across keys before matching sections like chorus, verse, or bridge.
       </p>
 
       <div class="control-row">
@@ -74,13 +74,11 @@
         </label>
 
         <label class="field compact">
-          <span>Match mode</span>
+          <span>Match style</span>
           <select id="match-mode">
-            <option value="mixed">Mixed ranking</option>
-            <option value="exact">Exact only</option>
-            <option value="contains">Contains only</option>
-            <option value="similar">Similar only</option>
-            <option value="flexible">Passing-chord aware</option>
+            <option value="balanced">Balanced</option>
+            <option value="strict">Strict sequence</option>
+            <option value="flexible" selected>Flexible (Default)</option>
           </select>
         </label>
 
@@ -94,6 +92,18 @@
           </select>
         </label>
       </div>
+
+      <p id="mode-help-text" class="mode-help-text" aria-live="polite"></p>
+
+      <details class="terms-details">
+        <summary>What these search terms mean</summary>
+        <div class="terms-grid">
+          <p><strong>Strict sequence:</strong> Your progression must appear in order. Slash chords are normalized (for example, <code>1/3</code> can match <code>1</code>).</p>
+          <p><strong>Balanced:</strong> Finds in-order matches and close in-order variants with full progression coverage.</p>
+          <p><strong>Flexible:</strong> Like Balanced, but treats slash chords (for example, <code>1/3</code>) as their base chord (<code>1</code>).</p>
+          <p><strong>Slash chord:</strong> A chord over a bass note, like <code>1/3</code>.</p>
+        </div>
+      </details>
     </section>
 
     <section class="summary-bar">
@@ -130,6 +140,7 @@
       <p class="result-score"></p>
       <p class="result-detail"></p>
       <p class="result-key"></p>
+      <p class="result-progressions"></p>
       <div class="score-breakdown"></div>
       <div class="flow-list"></div>
     </article>

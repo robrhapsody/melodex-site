@@ -15,6 +15,8 @@ CHORD_TOKEN_PATTERN = re.compile(
     r"^[A-Ga-g](?:#|b|s)?(?:m(?![a-z])|maj7?|min|sus(?:2|4)?|add\d+|dim|aug|[0-9]*)*(?:/[A-Ga-g](?:#|b|s)?)?$",
     re.IGNORECASE,
 )
+CHORD_HEAD_PATTERN = re.compile(r"^([A-Ga-g])((?:#|b|s(?!us))?)(.*)$")
+KEY_HEAD_PATTERN = re.compile(r"^([A-Ga-g])((?:#|b|s(?!us))?)(?:\s|_|$)")
 
 NOTE_TO_SEMITONE = {
     "C": 0,
@@ -111,11 +113,23 @@ def semitone_for_note(note: str | None) -> int | None:
     return NOTE_TO_SEMITONE.get(note)
 
 
+def parse_chord_head(token: str | None) -> tuple[str, str] | None:
+    if not token:
+        return None
+    match = CHORD_HEAD_PATTERN.match(token.strip())
+    if not match:
+        return None
+    note = normalize_note_name(f"{match.group(1)}{match.group(2)}")
+    if note not in NOTE_TO_SEMITONE:
+        return None
+    return note, match.group(3) or ""
+
+
 def parse_key_tonic(key_text: str | None) -> int | None:
     text = normalize_text(key_text)
     if not text:
         return None
-    match = re.match(r"^([A-Ga-g])([#bs]?)(?:\s|_|$)", text)
+    match = KEY_HEAD_PATTERN.match(text)
     if not match:
         return None
     note = normalize_note_name(f"{match.group(1)}{match.group(2)}")
@@ -130,14 +144,14 @@ def chord_token_to_parts(token: str) -> tuple[int, bool] | None:
         return None
     if not CHORD_TOKEN_PATTERN.fullmatch(cleaned):
         return None
-    match = re.match(r"^([A-Ga-g])([#bs]?)(.*)$", cleaned)
-    if not match:
+    head = parse_chord_head(cleaned)
+    if not head:
         return None
-    note = normalize_note_name(f"{match.group(1)}{match.group(2)}")
+    note, tail_text = head
     semitone = semitone_for_note(note)
     if semitone is None:
         return None
-    tail = (match.group(3) or "").lower()
+    tail = tail_text.lower()
     is_minor = bool(re.match(r"^m(?!aj)", tail) or "min" in tail)
     return semitone, is_minor
 

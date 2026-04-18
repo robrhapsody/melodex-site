@@ -1,0 +1,8 @@
+{
+  "name": "worship-progressions-app-experimental",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.8"
+  }
+}

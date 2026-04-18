@@ -117,6 +117,52 @@ function Get-CanonicalKeyName {
     }
 }
 
+function Get-ChordHeadMatch {
+    param(
+        [string]$Token
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Token)) {
+        return $null
+    }
+
+    $text = $Token.Trim()
+    if ($text -notmatch '^([A-Ga-g])((?:#|b|s(?!us))?)(.*)$') {
+        return $null
+    }
+
+    $note = Normalize-NoteName -Note ($matches[1] + $matches[2])
+    if ($null -eq (Get-NoteSemitone -Note $note)) {
+        return $null
+    }
+
+    return [pscustomobject]@{
+        Note = $note
+        Tail = $matches[3]
+    }
+}
+
+function Get-BassRoot {
+    param(
+        [string]$Bass
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Bass)) {
+        return $null
+    }
+
+    if ($Bass -notmatch '^([A-Ga-g])((?:#|b|s(?!us))?)') {
+        return $null
+    }
+
+    $note = Normalize-NoteName -Note ($matches[1] + $matches[2])
+    if ($null -eq (Get-NoteSemitone -Note $note)) {
+        return $null
+    }
+
+    return $note
+}
+
 function Normalize-ChordToken {
     param(
         [string]$Token
@@ -135,12 +181,13 @@ function Normalize-ChordToken {
     $main = $parts[0]
     $bass = if ($parts.Count -gt 1) { $parts[1] } else { $null }
 
-    if ($main -notmatch '^([A-Ga-g])([#bs]?)') {
+    $head = Get-ChordHeadMatch -Token $main
+    if (-not $head) {
         return $null
     }
 
-    $root = Normalize-NoteName -Note ($matches[1] + $matches[2])
-    $tail = $main.Substring($matches[0].Length).ToLowerInvariant()
+    $root = $head.Note
+    $tail = ([string]$head.Tail).ToLowerInvariant()
     $isMinor = $false
     if ($tail -match '^m(?!aj)' -or $tail.Contains('min')) {
         $isMinor = $true
@@ -148,11 +195,9 @@ function Normalize-ChordToken {
 
     $normalized = if ($isMinor) { "$root" + "m" } else { $root }
     if (-not [string]::IsNullOrWhiteSpace($bass)) {
-        if ($bass -match '^([A-Ga-g])([#bs]?)') {
-            $bassRoot = Normalize-NoteName -Note ($matches[1] + $matches[2])
-            if ($bassRoot) {
-                $normalized = "$normalized/$bassRoot"
-            }
+        $bassRoot = Get-BassRoot -Bass $bass
+        if ($bassRoot) {
+            $normalized = "$normalized/$bassRoot"
         }
     }
 
