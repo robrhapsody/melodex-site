@@ -3,8 +3,11 @@
   const songQueryInput = document.getElementById("song-query");
   const progressionQueryInput = document.getElementById("progression-query");
   const sectionFilter = document.getElementById("section-filter");
+  const feelFilter = document.getElementById("feel-filter");
   const matchModeSelect = document.getElementById("match-mode");
   const resultLimitSelect = document.getElementById("result-limit");
+  const showChordNamesToggle = document.getElementById("show-chord-names");
+  const chordDisplayKeySelect = document.getElementById("chord-display-key");
   const songSuggestions = document.getElementById("song-suggestions");
   const referencePanel = document.getElementById("reference-panel");
   const referenceTitle = document.getElementById("reference-title");
@@ -24,6 +27,8 @@
     progressionInputDebounceId: null,
     suggestionsAbortController: null,
     searchAbortController: null,
+    lastResults: [],
+    lastContext: { hasSearch: false },
   };
 
   const catalogLabels = {
@@ -31,11 +36,48 @@
     broad_christian_worship: "Broad Christian / Worship",
     worship_strict: "Worship",
   };
-  const flowPriority = ["pre_chorus", "chorus", "bridge", "tag", "interlude", "verse", "intro", "outro", "full_song"];
   const modeDescriptions = {
     balanced: "Balanced: keeps chord order and returns close in-order matches.",
     strict: "Strict sequence: progression must appear in order (slash chords still map to base chords).",
     flexible: "Flexible (default): passing/slash chords are simplified (for example, 1/3 can match 1).",
+  };
+  const referenceSectionPriority = ["bridge", "pre_chorus", "chorus", "tag", "interlude"];
+  const referenceSectionSet = new Set(referenceSectionPriority);
+  const keyPitches = {
+    C: 0,
+    "C#": 1,
+    Db: 1,
+    D: 2,
+    "D#": 3,
+    Eb: 3,
+    E: 4,
+    F: 5,
+    "F#": 6,
+    Gb: 6,
+    G: 7,
+    "G#": 8,
+    Ab: 8,
+    A: 9,
+    "A#": 10,
+    Bb: 10,
+    B: 11,
+  };
+  const sharpNoteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+  const flatNoteNames = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
+  const flatKeys = new Set(["F", "Bb", "Eb", "Ab", "Db", "Gb"]);
+  const degreeIntervals = {
+    "1": 0,
+    b2: 1,
+    "2": 2,
+    b3: 3,
+    "3": 4,
+    "4": 5,
+    "#4": 6,
+    "5": 7,
+    b6: 8,
+    "6": 9,
+    b7: 10,
+    "7": 11,
   };
 
   function normalizeText(text) {
@@ -43,6 +85,68 @@
       .toLowerCase()
       .replace(/\s+/g, " ")
       .trim();
+  }
+
+  function mod(value, divisor) {
+    return ((value % divisor) + divisor) % divisor;
+  }
+
+  function preferFlatNotes(keyName) {
+    return flatKeys.has(String(keyName || ""));
+  }
+
+  function pitchToNoteName(pitch, keyName) {
+    const names = preferFlatNotes(keyName) ? flatNoteNames : sharpNoteNames;
+    return names[mod(pitch, 12)];
+  }
+
+  function normalizeNashvilleToken(token) {
+    const cleaned = String(token || "").trim().replace(/\s+/g, "");
+    const match = cleaned.match(/^([b#]?[1-7])(m)?(?:\/([b#]?[1-7]))?$/i);
+    if (!match) {
+      return null;
+    }
+    return {
+      degree: match[1].toLowerCase(),
+      minor: Boolean(match[2]),
+      bass: match[3] ? match[3].toLowerCase() : "",
+    };
+  }
+
+  function nashvilleTokenToChord(token, keyName) {
+    const keyPitch = keyPitches[keyName];
+    const parsed = normalizeNashvilleToken(token);
+    if (!Number.isFinite(keyPitch) || !parsed) {
+      return token;
+    }
+
+    const rootInterval = degreeIntervals[parsed.degree];
+    if (!Number.isFinite(rootInterval)) {
+      return token;
+    }
+
+    const root = pitchToNoteName(keyPitch + rootInterval, keyName);
+    const chord = `${root}${parsed.minor ? "m" : ""}`;
+    if (!parsed.bass) {
+      return chord;
+    }
+
+    const bassInterval = degreeIntervals[parsed.bass];
+    if (!Number.isFinite(bassInterval)) {
+      return chord;
+    }
+    return `${chord}/${pitchToNoteName(keyPitch + bassInterval, keyName)}`;
+  }
+
+  function convertNashvilleToChords(progressionText, keyName) {
+    if (!keyName || !Number.isFinite(keyPitches[keyName])) {
+      return "";
+    }
+    const tokens = String(progressionText || "").trim().split(/\s+/).filter(Boolean);
+    if (!tokens.length) {
+      return "";
+    }
+    return tokens.map((token) => nashvilleTokenToChord(token, keyName)).join(" ");
   }
 
   function getCatalogLabel(catalog) {
@@ -76,7 +180,8 @@
   }
 
   function songMetaText(song) {
-    return [song.primaryCatalogLabel, song.year, song.genre, song.key].filter(Boolean).join(" - ");
+    const bpmText = Number.isFinite(Number(song.bpm)) ? `${Math.round(Number(song.bpm))} BPM` : "";
+    return [song.primaryCatalogLabel, song.year, bpmText].filter(Boolean).join(" - ");
   }
 
   function normalizeSectionName(name) {
@@ -88,116 +193,195 @@
     return normalized.replace(/_\d+$/, "");
   }
 
-  function renderChordPills(sequenceText) {
+  function formatSectionName(name) {
+    const value = String(name || "section").replace(/_/g, " ").trim();
+    return value || "section";
+  }
+
+  function formatBaseSectionName(name) {
+    return formatSectionName(baseSectionName(name));
+  }
+
+  function renderChordPills(sequenceText, maxTokens = 24) {
     const wrapper = document.createElement("div");
     wrapper.className = "chord-pills";
-    const tokens = String(sequenceText || "").trim().split(/\s+/).filter(Boolean).slice(0, 24);
+    const allTokens = String(sequenceText || "").trim().split(/\s+/).filter(Boolean);
+    const tokens = allTokens.slice(0, maxTokens);
     tokens.forEach((token, index) => {
       const pill = document.createElement("span");
       pill.className = `chord-pill c${index % 4}`;
       pill.textContent = token;
       wrapper.appendChild(pill);
     });
+    if (allTokens.length > tokens.length) {
+      const more = document.createElement("span");
+      more.className = "chord-more";
+      more.textContent = "+";
+      more.title = "Preview shortened";
+      wrapper.appendChild(more);
+    }
     return wrapper;
   }
 
-  function formatSignedScore(value) {
-    if (typeof value !== "number" || Number.isNaN(value)) {
-      return "0";
-    }
-    if (value > 0) {
-      return `+${value}`;
-    }
-    return `${value}`;
-  }
-
-  function renderScoreBreakdown(result) {
-    const wrapper = document.createElement("div");
-    wrapper.className = "score-breakdown";
-
-    const parts = [
-      { label: "Progression", value: result.progressionScore },
-      { label: "Section", value: result.sectionScore },
-      { label: "Worship", value: result.worshipRelevanceScore },
-      { label: "BPM", value: result.bpmScore },
-      { label: "Familiarity", value: result.familiarityScore },
-      { label: "Structure", value: result.structurePenalty },
-    ];
-
-    for (const part of parts) {
-      const chip = document.createElement("span");
-      chip.className = "score-chip";
-      chip.innerHTML = `${part.label}: <strong>${formatSignedScore(part.value)}</strong>`;
-      wrapper.appendChild(chip);
-    }
-
-    if (typeof result.bpmDifference === "number" && Number.isFinite(result.bpmDifference)) {
-      const bpmDiffChip = document.createElement("span");
-      bpmDiffChip.className = "score-chip";
-      bpmDiffChip.innerHTML = `Δ BPM: <strong>${result.bpmDifference.toFixed(1)}</strong>`;
-      wrapper.appendChild(bpmDiffChip);
-    }
-
-    if (result.usedCoreProgression) {
-      const coreChip = document.createElement("span");
-      coreChip.className = "score-chip";
-      coreChip.innerHTML = `Core match: <strong>passing chords tolerated</strong>`;
-      wrapper.appendChild(coreChip);
-    }
-
-    return wrapper;
-  }
-
-  function chooseFlowEntries(entries, selectedSection, emphasizedSection, limit = 3) {
+  function chooseReferenceEntries(entries, selectedSection) {
     const items = Array.isArray(entries) ? entries.filter((entry) => entry && entry.text) : [];
     if (!items.length) {
       return [];
     }
+    if (selectedSection !== "all") {
+      const matching = items.filter((entry) => baseSectionName(entry.baseName || entry.name) === selectedSection);
+      return dedupeReferenceEntries(matching.length ? matching : items, 3);
+    }
+    const transitionEntries = items.filter((entry) => referenceSectionSet.has(baseSectionName(entry.baseName || entry.name)));
+    return dedupeReferenceEntries(transitionEntries.length ? transitionEntries : items, 4);
+  }
 
-    const baseFiltered = selectedSection === "all"
-      ? items
-      : items.filter((entry) => baseSectionName(entry.baseName || entry.name) === selectedSection);
-
-    const candidates = baseFiltered.length ? baseFiltered : items;
-    const emphasizedBase = baseSectionName(emphasizedSection || "");
-    const selectedBases = new Set();
-    const output = [];
-
-    function tryPush(entry) {
+  function dedupeReferenceEntries(entries, limit) {
+    const byKey = new Map();
+    for (const entry of entries) {
       const base = baseSectionName(entry.baseName || entry.name);
-      if (!base || selectedBases.has(base)) {
-        return;
+      const progression = normalizeText(entry.text);
+      const key = `${base}|${progression}`;
+      if (!base || !progression || byKey.has(key)) {
+        continue;
       }
-      selectedBases.add(base);
-      output.push(entry);
+      byKey.set(key, entry);
     }
 
-    if (emphasizedBase) {
-      for (const entry of candidates) {
-        if (baseSectionName(entry.baseName || entry.name) === emphasizedBase) {
-          tryPush(entry);
-          break;
+    return Array.from(byKey.values())
+      .sort((left, right) => {
+        const leftIndex = referenceSectionPriority.indexOf(baseSectionName(left.baseName || left.name));
+        const rightIndex = referenceSectionPriority.indexOf(baseSectionName(right.baseName || right.name));
+        const normalizedLeft = leftIndex === -1 ? referenceSectionPriority.length : leftIndex;
+        const normalizedRight = rightIndex === -1 ? referenceSectionPriority.length : rightIndex;
+        if (normalizedLeft !== normalizedRight) {
+          return normalizedLeft - normalizedRight;
         }
+        return String(left.name || "").localeCompare(String(right.name || ""));
+      })
+      .slice(0, limit);
+  }
+
+  function getIndexedSectionNames(entries, visibleEntries) {
+    const visibleKeys = new Set(
+      visibleEntries.map((entry) => `${baseSectionName(entry.baseName || entry.name)}|${normalizeText(entry.text)}`)
+    );
+    const names = [];
+    const seen = new Set();
+    for (const entry of entries || []) {
+      const key = `${baseSectionName(entry.baseName || entry.name)}|${normalizeText(entry.text)}`;
+      if (visibleKeys.has(key)) {
+        continue;
       }
+      const label = formatSectionName(entry.name || entry.baseName);
+      const normalizedLabel = normalizeText(label);
+      if (!label || seen.has(normalizedLabel)) {
+        continue;
+      }
+      seen.add(normalizedLabel);
+      names.push(label);
+    }
+    return names;
+  }
+
+  function getRequestedChordKey(result, context) {
+    if (!showChordNamesToggle || !showChordNamesToggle.checked) {
+      return "";
     }
 
-    for (const sectionName of flowPriority) {
-      if (output.length >= limit) {
-        break;
-      }
-      for (const entry of candidates) {
-        if (baseSectionName(entry.baseName || entry.name) === sectionName) {
-          tryPush(entry);
-          break;
-        }
-      }
+    const selectedKey = chordDisplayKeySelect ? chordDisplayKeySelect.value : "song";
+    if (selectedKey === "song") {
+      return result.key || "";
+    }
+    if (selectedKey === "input") {
+      return context?.queryInterpretation?.detectedKey || "";
+    }
+    return selectedKey;
+  }
+
+  function getSnippetDisplay(result, context) {
+    const nashville = result.matchedProgressionNashville || "";
+    const requestedKey = getRequestedChordKey(result, context);
+    if (!requestedKey) {
+      return {
+        sequence: nashville,
+        label: "Nashville numbers",
+        helper: "",
+      };
     }
 
-    if (!output.length) {
-      tryPush(candidates[0]);
+    const converted = requestedKey === result.key
+      ? (result.matchedProgressionInSongKey || convertNashvilleToChords(nashville, requestedKey))
+      : convertNashvilleToChords(nashville, requestedKey);
+
+    if (!converted) {
+      return {
+        sequence: nashville,
+        label: "Nashville numbers",
+        helper: "Song key unavailable",
+      };
     }
 
-    return output.slice(0, limit);
+    return {
+      sequence: converted,
+      label: `Chord names in ${requestedKey}`,
+      helper: `Nashville: ${nashville}`,
+    };
+  }
+
+  function getMatchQuality(result) {
+    const quality = Number(result.matchQualityPercent);
+    if (Number.isFinite(quality)) {
+      return Math.round(quality);
+    }
+    return Math.min(99, Math.max(35, Math.round((Number(result.score) || 0) / 240 * 100)));
+  }
+
+  function buildFlowSummary(result, context) {
+    const resultSection = formatBaseSectionName(result.exactSectionLabel || result.sectionLabel);
+    const referenceSection = formatSectionName(result.referenceSection);
+
+    if (context?.referenceSong) {
+      return `Source ${referenceSection} into this ${resultSection}`;
+    }
+    if (referenceSection === "manual progression" || referenceSection === "all sections") {
+      return `Progression found in this ${resultSection}`;
+    }
+    return `${referenceSection} into this ${resultSection}`;
+  }
+
+  function buildMatchDetail(result) {
+    const parts = [];
+    if (result.matchDetail) {
+      parts.push(result.matchDetail);
+    }
+    if (result.bpmRelationship && Number(result.bpmScore) > 0) {
+      parts.push(`${formatSectionName(result.bpmRelationship)} support.`);
+    }
+    if (result.audioFeelLabel) {
+      parts.push(`${result.audioFeelLabel}.`);
+    }
+    return parts.join(" ");
+  }
+
+  function updateChordDisplayControls() {
+    if (!showChordNamesToggle || !chordDisplayKeySelect) {
+      return;
+    }
+    chordDisplayKeySelect.disabled = !showChordNamesToggle.checked;
+    const inputOption = chordDisplayKeySelect.querySelector('option[value="input"]');
+    if (inputOption) {
+      const hasInputKey = Boolean(state.lastContext?.queryInterpretation?.detectedKey);
+      inputOption.disabled = !hasInputKey;
+      if (!hasInputKey && chordDisplayKeySelect.value === "input") {
+        chordDisplayKeySelect.value = "song";
+      }
+    }
+  }
+
+  function rerenderLastResults() {
+    updateChordDisplayControls();
+    renderResults(state.lastResults || [], state.lastContext || { hasSearch: false });
   }
 
   function setLoadingSummary(message) {
@@ -262,18 +446,46 @@
     referenceMeta.textContent = songMetaText(song);
     referenceSections.innerHTML = "";
 
-    const flowEntries = chooseFlowEntries(song.sectionEntries, selectedSection, selectedSection, 3);
+    const scope = document.createElement("p");
+    scope.className = "reference-scope";
+    scope.textContent = selectedSection === "all"
+      ? "Showing short previews of the transition sections Flowset is using for matching."
+      : `Showing short previews of ${formatSectionName(selectedSection)} material used for matching.`;
+    referenceSections.appendChild(scope);
+
+    const flowEntries = chooseReferenceEntries(song.sectionEntries, selectedSection);
     for (const entry of flowEntries) {
       const row = document.createElement("div");
       row.className = "flow-row";
 
       const label = document.createElement("span");
       label.className = "flow-label";
-      label.textContent = baseSectionName(entry.baseName || entry.name).replace(/_/g, " ");
+      label.textContent = formatSectionName(entry.name || entry.baseName);
       row.appendChild(label);
 
-      row.appendChild(renderChordPills(entry.text));
+      row.appendChild(renderChordPills(entry.text, 8));
       referenceSections.appendChild(row);
+    }
+
+    const indexedNames = getIndexedSectionNames(song.sectionEntries || [], flowEntries);
+    if (indexedNames.length) {
+      const details = document.createElement("details");
+      details.className = "indexed-sections";
+
+      const summary = document.createElement("summary");
+      summary.textContent = `${indexedNames.length} other indexed sections`;
+      details.appendChild(summary);
+
+      const list = document.createElement("div");
+      list.className = "section-name-list";
+      indexedNames.forEach((name) => {
+        const chip = document.createElement("span");
+        chip.className = "section-name-chip";
+        chip.textContent = name;
+        list.appendChild(chip);
+      });
+      details.appendChild(list);
+      referenceSections.appendChild(details);
     }
   }
 
@@ -305,47 +517,25 @@
       const node = resultTemplate.content.firstElementChild.cloneNode(true);
       node.querySelector(".result-title").textContent = `${result.track} - ${result.artist}`;
       node.querySelector(".result-meta").textContent = songMetaText(result);
-      node.querySelector(".match-pill").textContent = result.matchLabel;
-      node.querySelector(".result-score").textContent = `Matched ${result.sectionLabel} against reference ${result.referenceSection}. Score: ${result.score}.`;
-      node.querySelector(".result-detail").textContent = result.matchDetail;
-      node.querySelector(".result-key").textContent = result.key ? `Song key: ${result.key}` : "Song key unavailable.";
-      const progressionLines = [];
-      if (result.matchedProgressionNashville) {
-        progressionLines.push(`Nashville: ${result.matchedProgressionNashville}`);
-      }
-      if (result.matchedProgressionInSongKey) {
-        progressionLines.push(`In ${result.key || "song key"}: ${result.matchedProgressionInSongKey}`);
-      }
-      if (
-        context.queryInterpretation
-        && context.queryInterpretation.inputType === "chords"
-        && context.queryInterpretation.detectedKey
-        && result.matchedProgressionInInputKey
-      ) {
-        progressionLines.push(`In ${context.queryInterpretation.detectedKey}: ${result.matchedProgressionInInputKey}`);
-      }
-      node.querySelector(".result-progressions").textContent = progressionLines.join("\n");
-      node.querySelector(".score-breakdown").appendChild(renderScoreBreakdown(result));
+      node.querySelector(".match-pill").innerHTML = `<span>Match Quality</span><strong>${getMatchQuality(result)}%</strong>`;
+      node.querySelector(".result-score").textContent = buildFlowSummary(result, context);
+      node.querySelector(".result-detail").textContent = buildMatchDetail(result);
+
+      const snippetDisplay = getSnippetDisplay(result, context);
+      node.querySelector(".result-key").textContent = snippetDisplay.label;
+      node.querySelector(".result-progressions").textContent = snippetDisplay.helper;
 
       const sectionList = node.querySelector(".flow-list");
-      const flowEntries = chooseFlowEntries(
-        result.sectionEntries || [],
-        sectionFilter.value,
-        result.sectionLabel,
-        3
-      );
-      for (const entry of flowEntries) {
-        const row = document.createElement("div");
-        row.className = "flow-row";
+      const row = document.createElement("div");
+      row.className = "flow-row";
 
-        const label = document.createElement("span");
-        label.className = "flow-label";
-        label.textContent = baseSectionName(entry.baseName || entry.name).replace(/_/g, " ");
-        row.appendChild(label);
+      const label = document.createElement("span");
+      label.className = "flow-label";
+      label.textContent = formatBaseSectionName(result.exactSectionLabel || result.sectionLabel);
+      row.appendChild(label);
 
-        row.appendChild(renderChordPills(entry.text));
-        sectionList.appendChild(row);
-      }
+      row.appendChild(renderChordPills(snippetDisplay.sequence));
+      sectionList.appendChild(row);
 
       fragment.appendChild(node);
     }
@@ -445,13 +635,17 @@
     const songQuery = songQueryInput.value.trim();
     const progressionQuery = progressionQueryInput.value.trim();
     const selectedSection = sectionFilter.value;
+    const selectedFeel = feelFilter ? feelFilter.value : "any";
     const selectedMode = matchModeSelect.value;
     const mode = getApiMatchMode(selectedMode);
     const limit = Number.parseInt(resultLimitSelect.value, 10) || 15;
 
     if (!progressionQuery && !state.selectedReferenceSongId) {
       renderReferencePanel(null, selectedSection);
-      renderResults([], { hasSearch: false });
+      state.lastResults = [];
+      state.lastContext = { hasSearch: false };
+      updateChordDisplayControls();
+      renderResults(state.lastResults, state.lastContext);
       updateSongCount();
       return;
     }
@@ -465,7 +659,7 @@
 
     try {
       const payload = await fetchJson(
-        `/api/search?catalog=${encodeURIComponent(state.catalog)}&songQuery=${encodeURIComponent(songQuery)}&referenceSongId=${encodeURIComponent(state.selectedReferenceSongId || "")}&progressionQuery=${encodeURIComponent(progressionQuery)}&section=${encodeURIComponent(selectedSection)}&mode=${encodeURIComponent(mode)}&limit=${encodeURIComponent(String(limit))}`,
+        `/api/search?catalog=${encodeURIComponent(state.catalog)}&songQuery=${encodeURIComponent(songQuery)}&referenceSongId=${encodeURIComponent(state.selectedReferenceSongId || "")}&progressionQuery=${encodeURIComponent(progressionQuery)}&section=${encodeURIComponent(selectedSection)}&feel=${encodeURIComponent(selectedFeel)}&mode=${encodeURIComponent(mode)}&limit=${encodeURIComponent(String(limit))}`,
         state.searchAbortController
       );
 
@@ -481,8 +675,11 @@
         state.selectedReferenceSongId = null;
       }
 
+      state.lastResults = Array.isArray(payload.results) ? payload.results : [];
+      state.lastContext = context;
+      updateChordDisplayControls();
       renderReferencePanel(payload.referenceSong, selectedSection);
-      renderResults(Array.isArray(payload.results) ? payload.results : [], context);
+      renderResults(state.lastResults, state.lastContext);
     } catch (error) {
       if (error.name === "AbortError") {
         return;
@@ -539,6 +736,9 @@
     if (!songQueryInput.value.trim() && !progressionQueryInput.value.trim()) {
       renderReferencePanel(null, sectionFilter.value);
       resultsContainer.innerHTML = "";
+      state.lastResults = [];
+      state.lastContext = { hasSearch: false };
+      updateChordDisplayControls();
       resultSummary.textContent = `Pick a song or progression to discover smooth transitions into your next song.`;
       return;
     }
@@ -547,19 +747,30 @@
   });
 
   sectionFilter.addEventListener("change", search);
+  if (feelFilter) {
+    feelFilter.addEventListener("change", search);
+  }
   matchModeSelect.addEventListener("change", () => {
     updateModeHelpText();
     search();
   });
   resultLimitSelect.addEventListener("change", search);
+  if (showChordNamesToggle) {
+    showChordNamesToggle.addEventListener("change", rerenderLastResults);
+  }
+  if (chordDisplayKeySelect) {
+    chordDisplayKeySelect.addEventListener("change", rerenderLastResults);
+  }
 
   (async function init() {
     try {
       await loadStats();
       updateModeHelpText();
+      updateChordDisplayControls();
       resultSummary.textContent = "Pick a song or progression to discover smooth transitions into your next song.";
     } catch (error) {
       updateModeHelpText();
+      updateChordDisplayControls();
       resultSummary.textContent = "The lab API is unavailable. Restart the experimental app server and try again.";
     }
   })();

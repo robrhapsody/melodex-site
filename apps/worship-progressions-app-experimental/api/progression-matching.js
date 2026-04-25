@@ -253,9 +253,13 @@ function tokenMetrics(targetTokens, candidateTokens) {
   const shortestLength = Math.max(1, Math.min(target.length, candidate.length))
   const lcsLength = longestCommonSubsequenceLength(target, candidate)
   const contiguousLength = longestContiguousRunLength(target, candidate)
+  const targetStr = target.join(" ")
+  const candidateStr = candidate.join(" ")
+  const startsWith = target.length > 0 && candidateStr.startsWith(`${targetStr} `)
   return {
-    exact: target.length > 0 && target.join(" ") === candidate.join(" "),
+    exact: target.length > 0 && targetStr === candidateStr,
     contains: containsTokenSequence(candidate, target),
+    startsWith,
     lcsLength,
     contiguousLength,
     orderedRatio: lcsLength / shortestLength,
@@ -367,6 +371,14 @@ function buildProgressionMatch(targetProgression, candidateProgression, mode) {
     progressionScore = 64
     matchLabel = "Exact (Normalized)"
     matchDetail = "Exact match after slash-chord normalization."
+  } else if (rawMetrics.startsWith) {
+    progressionScore = 60
+    matchLabel = "Starts With"
+    matchDetail = "Candidate section begins with the reference progression."
+  } else if (simplifiedMetrics.startsWith) {
+    progressionScore = 56
+    matchLabel = "Starts With (Normalized)"
+    matchDetail = "Candidate section begins with the normalized reference progression."
   } else if (rawMetrics.contains || simplifiedMetrics.contains) {
     progressionScore = 52
     matchLabel = "Contains"
@@ -482,6 +494,7 @@ function buildProgressionMatch(targetProgression, candidateProgression, mode) {
     exact: rawMetrics.exact,
     exactSimplified: simplifiedMetrics.exact,
     contains: rawMetrics.contains || simplifiedMetrics.contains,
+    startsWith: rawMetrics.startsWith || simplifiedMetrics.startsWith,
     orderedRatio: rawMetrics.orderedRatio,
     contiguousRatio: rawMetrics.contiguousRatio,
     simplifiedOrderedRatio: simplifiedMetrics.orderedRatio,

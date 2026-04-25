@@ -3,6 +3,11 @@ import assert from "node:assert/strict"
 
 import { buildProgressionMatch } from "./progression-matching.js"
 import {
+  resolveAudioFeelScore,
+  resolveBpmScore,
+  resolveMatchQualityPercent,
+} from "./search.js"
+import {
   buildCandidateSearchAnchors,
   buildReferenceTargets,
   findBestReferenceTargetMatch,
@@ -54,6 +59,64 @@ test("balanced and flexible keep valid strict contains matches", () => {
   assert.ok(flexibleMatch)
   assert.equal(balancedMatch.matchLabel, "Contains")
   assert.equal(flexibleMatch.matchLabel, "Contains")
+})
+
+test("phase-aligned matches score above later contains matches", () => {
+  const startsWithMatch = buildProgressionMatch("4 5 6m", "4 5 6m 1", "flexible")
+  const containsMatch = buildProgressionMatch("4 5 6m", "1 4 5 6m", "flexible")
+
+  assert.ok(startsWithMatch)
+  assert.ok(containsMatch)
+  assert.equal(startsWithMatch.matchLabel, "Starts With")
+  assert.ok(startsWithMatch.progressionScore > containsMatch.progressionScore)
+})
+
+test("half and double time BPM matches stay weaker than near-tempo matches", () => {
+  const nearTempo = resolveBpmScore(72, 75)
+  const doubleTime = resolveBpmScore(72, 144)
+  const halfTime = resolveBpmScore(144, 72)
+
+  assert.equal(nearTempo.bpmScore, 30)
+  assert.ok(doubleTime.bpmScore > 0)
+  assert.ok(halfTime.bpmScore > 0)
+  assert.ok(nearTempo.bpmScore > doubleTime.bpmScore * 3)
+  assert.ok(nearTempo.bpmScore > halfTime.bpmScore * 3)
+})
+
+test("energy and danceability add only a light feel signal", () => {
+  const matchedFeel = resolveAudioFeelScore(
+    { energy: 0.72, danceability: 0.52 },
+    { energy: 0.7, danceability: 0.55 },
+    "bright"
+  )
+  const mismatchedFeel = resolveAudioFeelScore(
+    { energy: 0.72, danceability: 0.52 },
+    { energy: 0.2, danceability: 0.28 },
+    "bright"
+  )
+
+  assert.ok(matchedFeel.audioFeelScore > mismatchedFeel.audioFeelScore)
+  assert.ok(matchedFeel.audioFeelScore <= 12)
+})
+
+test("match quality favors harmonic fit over tempo and feel support", () => {
+  const exact = buildProgressionMatch("4 5 6m", "4 5 6m", "flexible")
+  const contains = buildProgressionMatch("4 5 6m", "1 4 5 6m", "flexible")
+
+  const exactQuality = resolveMatchQualityPercent({
+    progressionMatch: exact,
+    sectionScore: 12,
+    bpmScore: 0,
+    audioFeelScore: 0,
+  })
+  const containsQuality = resolveMatchQualityPercent({
+    progressionMatch: contains,
+    sectionScore: 50,
+    bpmScore: 30,
+    audioFeelScore: 12,
+  })
+
+  assert.ok(exactQuality > containsQuality)
 })
 
 test("song-style reference matching chooses the best actual reference section", () => {
