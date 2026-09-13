@@ -2,7 +2,16 @@
   "name": "worship-progressions-app-experimental",
   "private": true,
   "type": "module",
+  "engines": { "node": "24.x" },
+  "scripts": {
+    "dev:vercel": "vercel dev --listen 127.0.0.1:3001",
+    "test": "node --test api/search.test.js tests/progression-input.test.js",
+    "check": "node --check app.js && node --check api/search.js && node --check api/_shared.js && node --check api/suggest.js && node --check api/stats.js && node --check api/keepalive.js"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.8"
+  },
+  "devDependencies": {
+    "vercel": "59.16.0"
   }
 }

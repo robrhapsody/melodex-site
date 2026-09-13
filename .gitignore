@@ -2,6 +2,8 @@
 __pycache__/
 *.pyc
 .vercel/
+.env*
+!.env.example
 apps/worship-progressions-app-experimental/node_modules/
 tmp_progression_451.json
 
