@@ -26,6 +26,7 @@ const CATALOG_LABELS = {
 }
 
 let cachedCounts = { value: null, expiresAt: 0 }
+let cachedBpmCoverage = { value: null, expiresAt: 0 }
 const cachedCatalogSongSets = new Map()
 const CACHE_TTL_MS = 10 * 60_000
 
@@ -122,6 +123,36 @@ export async function getCatalogCounts(supabase) {
 
   cachedCounts = { value: counts, expiresAt: now + CACHE_TTL_MS }
   return counts
+}
+
+export async function getBpmCoverageStats(supabase) {
+  const now = Date.now()
+  if (cachedBpmCoverage.value && cachedBpmCoverage.expiresAt > now) {
+    return cachedBpmCoverage.value
+  }
+
+  const [songsCountResponse, tempoCountResponse] = await Promise.all([
+    supabase.from("songs").select("id", { count: "exact", head: true }),
+    supabase.from("song_audio_features").select("song_id", { count: "exact", head: true }).not("tempo", "is", null),
+  ])
+
+  if (songsCountResponse.error) throw songsCountResponse.error
+  if (tempoCountResponse.error) throw tempoCountResponse.error
+
+  const totalSongs = songsCountResponse.count || 0
+  const songsWithTempo = tempoCountResponse.count || 0
+  const songsMissingTempo = Math.max(0, totalSongs - songsWithTempo)
+  const coveragePercent = totalSongs > 0 ? Number(((songsWithTempo / totalSongs) * 100).toFixed(1)) : 0
+
+  const coverage = {
+    totalSongs,
+    songsWithTempo,
+    songsMissingTempo,
+    coveragePercent,
+  }
+
+  cachedBpmCoverage = { value: coverage, expiresAt: now + CACHE_TTL_MS }
+  return coverage
 }
 
 export async function getCatalogSongIdSet(supabase, catalog) {

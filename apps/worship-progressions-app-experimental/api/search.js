@@ -146,7 +146,7 @@ async function fetchSongRowsByIds(supabase, songIds) {
   return rows
 }
 
-async function fetchTempoRowsBySongIds(supabase, songIds) {
+async function fetchAudioFeatureRowsBySongIds(supabase, songIds) {
   const uniqueIds = Array.from(new Set(songIds.map(Number).filter(Number.isFinite)))
   if (!uniqueIds.length) return []
 
@@ -154,7 +154,7 @@ async function fetchTempoRowsBySongIds(supabase, songIds) {
   for (const idChunk of chunkArray(uniqueIds, 300)) {
     const { data, error } = await supabase
       .from("song_audio_features")
-      .select("song_id,tempo")
+      .select("song_id,tempo,energy,danceability")
       .in("song_id", idChunk)
     if (error) throw error
     rows.push(...(data || []))
@@ -379,18 +379,50 @@ function resolveWorshipScore(song, primaryCatalogLabel) {
   return -10
 }
 
+function toFiniteNumber(value) {
+  const number = Number(value)
+  return Number.isFinite(number) ? number : null
+}
+
 function resolveBpmScore(referenceBpm, candidateBpm) {
   if (!Number.isFinite(referenceBpm) || !Number.isFinite(candidateBpm)) {
-    return { bpmScore: 0, bpmDifference: null }
+    return { bpmScore: 0, bpmDifference: null, bpmRelationship: "" }
   }
 
-  const bpmDifference = Math.abs(candidateBpm - referenceBpm)
-  if (bpmDifference <= 3) return { bpmScore: 30, bpmDifference }
-  if (bpmDifference <= 6) return { bpmScore: 24, bpmDifference }
-  if (bpmDifference <= 10) return { bpmScore: 18, bpmDifference }
-  if (bpmDifference <= 15) return { bpmScore: 10, bpmDifference }
-  if (bpmDifference <= 20) return { bpmScore: 5, bpmDifference }
-  return { bpmScore: 0, bpmDifference }
+  const directDifference = Math.abs(candidateBpm - referenceBpm)
+  if (directDifference <= 3) {
+    return { bpmScore: 30, bpmDifference: directDifference, bpmRelationship: "same tempo" }
+  }
+  if (directDifference <= 6) {
+    return { bpmScore: 24, bpmDifference: directDifference, bpmRelationship: "near tempo" }
+  }
+  if (directDifference <= 10) {
+    return { bpmScore: 18, bpmDifference: directDifference, bpmRelationship: "near tempo" }
+  }
+  if (directDifference <= 15) {
+    return { bpmScore: 10, bpmDifference: directDifference, bpmRelationship: "loose tempo" }
+  }
+  if (directDifference <= 20) {
+    return { bpmScore: 5, bpmDifference: directDifference, bpmRelationship: "loose tempo" }
+  }
+
+  const halfDoubleCandidates = [
+    { difference: Math.abs(candidateBpm - referenceBpm / 2), relationship: "half-time feel" },
+    { difference: Math.abs(candidateBpm - referenceBpm * 2), relationship: "double-time feel" },
+  ].sort((left, right) => left.difference - right.difference)
+  const bestHalfDouble = halfDoubleCandidates[0]
+
+  if (bestHalfDouble.difference <= 3) {
+    return { bpmScore: 8, bpmDifference: bestHalfDouble.difference, bpmRelationship: bestHalfDouble.relationship }
+  }
+  if (bestHalfDouble.difference <= 6) {
+    return { bpmScore: 5, bpmDifference: bestHalfDouble.difference, bpmRelationship: bestHalfDouble.relationship }
+  }
+  if (bestHalfDouble.difference <= 10) {
+    return { bpmScore: 2, bpmDifference: bestHalfDouble.difference, bpmRelationship: bestHalfDouble.relationship }
+  }
+
+  return { bpmScore: 0, bpmDifference: directDifference, bpmRelationship: "" }
 }
 
 function resolveFamiliarityScore(song, primaryCatalogLabel) {
@@ -400,13 +432,79 @@ function resolveFamiliarityScore(song, primaryCatalogLabel) {
   return 0
 }
 
+function normalizeFeelPreference(value) {
+  const normalized = normalizeText(value || "any")
+  return ["any", "bright", "steady", "gentle"].includes(normalized) ? normalized : "any"
+}
+
+function classifyFeel(features) {
+  const energy = toFiniteNumber(features?.energy)
+  const danceability = toFiniteNumber(features?.danceability)
+  if (!Number.isFinite(energy) && !Number.isFinite(danceability)) return ""
+
+  const energyValue = Number.isFinite(energy) ? energy : 0.5
+  const danceabilityValue = Number.isFinite(danceability) ? danceability : 0.5
+  if (energyValue >= 0.66 || danceabilityValue >= 0.68) return "bright"
+  if (energyValue <= 0.38 && danceabilityValue <= 0.55) return "gentle"
+  return "steady"
+}
+
+function resolveAudioFeelScore(referenceFeatures, candidateFeatures, feelPreference = "any") {
+  const candidateFeel = classifyFeel(candidateFeatures)
+  let audioFeelScore = 0
+  const detailParts = []
+
+  const energyPairs = [
+    [toFiniteNumber(referenceFeatures?.energy), toFiniteNumber(candidateFeatures?.energy)],
+    [toFiniteNumber(referenceFeatures?.danceability), toFiniteNumber(candidateFeatures?.danceability)],
+  ].filter(([referenceValue, candidateValue]) => Number.isFinite(referenceValue) && Number.isFinite(candidateValue))
+
+  if (energyPairs.length) {
+    const similarity = energyPairs.reduce((sum, [referenceValue, candidateValue]) => {
+      return sum + Math.max(0, 1 - Math.abs(referenceValue - candidateValue))
+    }, 0) / energyPairs.length
+
+    if (similarity >= 0.88) {
+      audioFeelScore += 8
+      detailParts.push("very similar energy")
+    } else if (similarity >= 0.74) {
+      audioFeelScore += 5
+      detailParts.push("similar energy")
+    } else if (similarity >= 0.58) {
+      audioFeelScore += 2
+      detailParts.push("somewhat similar energy")
+    } else {
+      audioFeelScore -= 2
+    }
+  }
+
+  const normalizedPreference = normalizeFeelPreference(feelPreference)
+  if (normalizedPreference !== "any" && candidateFeel) {
+    if (candidateFeel === normalizedPreference) {
+      audioFeelScore += 6
+      detailParts.push(`${candidateFeel} feel`)
+    } else if (normalizedPreference === "steady") {
+      audioFeelScore += 2
+    } else {
+      audioFeelScore -= 3
+    }
+  }
+
+  return {
+    audioFeelScore: Math.max(-5, Math.min(12, audioFeelScore)),
+    audioFeelLabel: detailParts.join(", "),
+    candidateFeel,
+  }
+}
+
 function applyScoringWeights(
   progressionScore,
   sectionScore,
   worshipRelevanceScore,
   bpmScore,
   familiarityScore,
-  structurePenalty
+  structurePenalty,
+  audioFeelScore = 0
 ) {
   // Keep harmonic flow dominant, then section context, then worship relevance.
   return (
@@ -416,7 +514,40 @@ function applyScoringWeights(
     + bpmScore * 0.6
     + familiarityScore * 0.4
     + structurePenalty
+    + audioFeelScore * 0.5
   )
+}
+
+function resolveMatchQualityPercent({
+  progressionMatch,
+  sectionScore = 0,
+  bpmScore = 0,
+  audioFeelScore = 0,
+  structurePenalty = 0,
+}) {
+  let baseQuality = 45
+  if (progressionMatch?.exact) {
+    baseQuality = 96
+  } else if (progressionMatch?.exactSimplified) {
+    baseQuality = 91
+  } else if (progressionMatch?.startsWith) {
+    baseQuality = 86
+  } else if (progressionMatch?.usedCoreProgression) {
+    baseQuality = progressionMatch.matchLabel === "Core Exact" ? 84 : 78
+  } else if (progressionMatch?.contains) {
+    baseQuality = 76
+  } else if (progressionMatch?.progressionScore >= 40) {
+    baseQuality = 66
+  } else if (progressionMatch?.progressionScore >= 30) {
+    baseQuality = 58
+  }
+
+  const sectionBonus = Math.max(0, Math.min(5, Math.round(sectionScore / 10)))
+  const bpmBonus = Math.max(0, Math.min(3, Math.round(bpmScore / 10)))
+  const feelBonus = Math.max(-2, Math.min(2, Math.round(audioFeelScore / 4)))
+  const structureAdjustment = structurePenalty < 0 ? Math.max(-5, Math.round(structurePenalty / 3)) : 0
+
+  return Math.max(30, Math.min(100, baseQuality + sectionBonus + bpmBonus + feelBonus + structureAdjustment))
 }
 
 async function findReferenceSong(supabase, referenceSongId, songQuery, catalog) {
@@ -488,6 +619,7 @@ export default async function handler(req, res) {
     const catalog = parseCatalog(req.query.catalog, CATALOG_WORSHIP)
     const section = parseSection(req.query.section, "all")
     const mode = normalizeText(req.query.mode || "flexible") || "flexible"
+    const feelPreference = normalizeFeelPreference(req.query.feel)
     const limit = clampPositiveInteger(req.query.limit, 15, 1, 100)
 
     const songQuery = String(req.query.songQuery || "").trim()
@@ -514,12 +646,14 @@ export default async function handler(req, res) {
     const referenceVersionId = reference?.version ? Number(reference.version.id) : null
 
     let referenceTempo = null
+    let referenceAudioFeatures = null
     let referenceSongPayload = null
     if (reference) {
       const membershipRows = await getMembershipRowsForSongIds(supabase, [reference.song.id])
       const resolver = buildCatalogResolverFromMemberships(membershipRows)
-      const tempoRows = await fetchTempoRowsBySongIds(supabase, [reference.song.id])
-      referenceTempo = Number(tempoRows[0]?.tempo)
+      const audioFeatureRows = await fetchAudioFeatureRowsBySongIds(supabase, [reference.song.id])
+      referenceAudioFeatures = audioFeatureRows[0] || null
+      referenceTempo = Number(referenceAudioFeatures?.tempo)
       if (!Number.isFinite(referenceTempo)) referenceTempo = null
 
       referenceSongPayload = {
@@ -569,17 +703,20 @@ export default async function handler(req, res) {
     const candidateSongIds = Array.from(new Set(
       versionRows.map((row) => Number(row.song_id)).filter(Number.isFinite)
     ))
-    const shouldFetchCandidateTempo = Number.isFinite(referenceTempo)
-    const [songRows, tempoRows, membershipRows] = await Promise.all([
+    const shouldFetchCandidateAudio = Number.isFinite(referenceTempo)
+      || Number.isFinite(toFiniteNumber(referenceAudioFeatures?.energy))
+      || Number.isFinite(toFiniteNumber(referenceAudioFeatures?.danceability))
+      || feelPreference !== "any"
+    const [songRows, audioFeatureRows, membershipRows] = await Promise.all([
       fetchSongRowsByIds(supabase, candidateSongIds),
-      shouldFetchCandidateTempo ? fetchTempoRowsBySongIds(supabase, candidateSongIds) : Promise.resolve([]),
+      shouldFetchCandidateAudio ? fetchAudioFeatureRowsBySongIds(supabase, candidateSongIds) : Promise.resolve([]),
       getMembershipRowsForSongIds(supabase, candidateSongIds),
     ])
 
     const songById = new Map(songRows.map((row) => [Number(row.id), row]))
-    const tempoBySongId = new Map(
-      tempoRows
-        .map((row) => [Number(row.song_id), Number(row.tempo)])
+    const audioFeaturesBySongId = new Map(
+      audioFeatureRows
+        .map((row) => [Number(row.song_id), row])
         .filter((pair) => Number.isFinite(pair[0]))
     )
     const catalogResolver = buildCatalogResolverFromMemberships(membershipRows)
@@ -602,8 +739,14 @@ export default async function handler(req, res) {
       const { progressionMatch, referenceTarget, sectionScore, structurePenalty } = referenceTargetMatch
       const primaryCatalogLabel = catalogResolver.getPrimaryLabel(song.id)
       const worshipRelevanceScore = resolveWorshipScore(song, primaryCatalogLabel)
-      const candidateTempo = Number(tempoBySongId.get(songId))
-      const { bpmScore, bpmDifference } = resolveBpmScore(referenceTempo, candidateTempo)
+      const candidateAudioFeatures = audioFeaturesBySongId.get(songId) || null
+      const candidateTempo = Number(candidateAudioFeatures?.tempo)
+      const { bpmScore, bpmDifference, bpmRelationship } = resolveBpmScore(referenceTempo, candidateTempo)
+      const { audioFeelScore, audioFeelLabel, candidateFeel } = resolveAudioFeelScore(
+        referenceAudioFeatures,
+        candidateAudioFeatures,
+        feelPreference
+      )
       const familiarityScore = resolveFamiliarityScore(song, primaryCatalogLabel)
       const score = applyScoringWeights(
         progressionMatch.progressionScore,
@@ -611,8 +754,16 @@ export default async function handler(req, res) {
         worshipRelevanceScore,
         bpmScore,
         familiarityScore,
-        structurePenalty
+        structurePenalty,
+        audioFeelScore
       )
+      const matchQualityPercent = resolveMatchQualityPercent({
+        progressionMatch,
+        sectionScore,
+        bpmScore,
+        audioFeelScore,
+        structurePenalty,
+      })
       const result = {
         rowId: String(song.id),
         track: song.title,
@@ -621,19 +772,27 @@ export default async function handler(req, res) {
         genre: song.main_genre || song.genre || "",
         key: version.display_key || "",
         bpm: Number.isFinite(candidateTempo) ? candidateTempo : null,
+        energy: toFiniteNumber(candidateAudioFeatures?.energy),
+        danceability: toFiniteNumber(candidateAudioFeatures?.danceability),
         primaryCatalogLabel,
         sectionLabel: candidateSection || "section",
+        exactSectionLabel: row.name_raw || row.section_type_estimated || candidateSection || "section",
         referenceSection: referenceTarget?.label || (section === "all" ? "all sections" : formatSectionLabel(section)),
         matchLabel: progressionMatch.matchLabel,
-        matchDetail: `${progressionMatch.matchDetail} Reference progression: ${referenceTarget?.progression || targetProgression}. Candidate progression: ${row.nashville}.`,
+        matchDetail: progressionMatch.matchDetail,
+        matchQualityPercent,
         score: Math.round(score),
         progressionScore: progressionMatch.progressionScore,
         sectionScore,
         worshipRelevanceScore,
         bpmScore,
+        audioFeelScore,
+        audioFeelLabel,
+        candidateFeel,
         familiarityScore,
         structurePenalty,
         bpmDifference,
+        bpmRelationship,
         usedCoreProgression: progressionMatch.usedCoreProgression,
         matchedProgressionNashville: row.nashville,
         _versionId: Number(version.id),
@@ -649,10 +808,6 @@ export default async function handler(req, res) {
       .sort((a, b) => b.score - a.score)
       .slice(0, limit)
 
-    const topVersionIds = ranked.map((result) => Number(result._versionId)).filter(Number.isFinite)
-    const topSectionRows = await fetchSectionRowsByVersionIds(supabase, topVersionIds, "all")
-    const sectionEntriesMap = sectionEntriesByVersionId(topSectionRows)
-
     const results = ranked.map((result) => ({
       ...result,
       matchedProgressionInSongKey: result.key
@@ -661,7 +816,6 @@ export default async function handler(req, res) {
       matchedProgressionInInputKey: queryInterpretation?.detectedKey
         ? convertNashvilleToChords(result.matchedProgressionNashville, queryInterpretation.detectedKey)
         : "",
-      sectionEntries: sectionEntriesMap.get(Number(result._versionId)) || [],
       _versionId: undefined,
     }))
 
@@ -679,4 +833,10 @@ export default async function handler(req, res) {
     const statusCode = /couldn't understand|enter a progression|use either chord letters/i.test(message) ? 400 : 500
     return res.status(statusCode).json({ error: message })
   }
+}
+
+export {
+  resolveAudioFeelScore,
+  resolveBpmScore,
+  resolveMatchQualityPercent,
 }

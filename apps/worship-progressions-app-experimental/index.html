@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Flowset</title>
+  <link rel="icon" href="assets/flowset-f-logo.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -74,11 +75,12 @@
         </label>
 
         <label class="field compact">
-          <span>Match style</span>
-          <select id="match-mode">
-            <option value="balanced">Balanced</option>
-            <option value="strict">Strict sequence</option>
-            <option value="flexible" selected>Flexible (Default)</option>
+          <span>Feel</span>
+          <select id="feel-filter">
+            <option value="any" selected>Any feel</option>
+            <option value="bright">Bright</option>
+            <option value="steady">Steady</option>
+            <option value="gentle">Gentle</option>
           </select>
         </label>
 
@@ -93,10 +95,46 @@
         </label>
       </div>
 
-      <p id="mode-help-text" class="mode-help-text" aria-live="polite"></p>
+      <div class="display-row">
+        <label class="toggle-field">
+          <input id="show-chord-names" type="checkbox">
+          <span>Show chord names</span>
+        </label>
 
-      <details class="terms-details">
-        <summary>What these search terms mean</summary>
+        <label class="field compact chord-key-field">
+          <span>Chord key</span>
+          <select id="chord-display-key" disabled>
+            <option value="song" selected>Song key</option>
+            <option value="input">Input key</option>
+            <option value="C">Key of C / Am</option>
+            <option value="Db">Key of Db / Bbm</option>
+            <option value="D">Key of D / Bm</option>
+            <option value="Eb">Key of Eb / Cm</option>
+            <option value="E">Key of E / C#m</option>
+            <option value="F">Key of F / Dm</option>
+            <option value="F#">Key of F# / D#m</option>
+            <option value="G">Key of G / Em</option>
+            <option value="Ab">Key of Ab / Fm</option>
+            <option value="A">Key of A / F#m</option>
+            <option value="Bb">Key of Bb / Gm</option>
+            <option value="B">Key of B / G#m</option>
+          </select>
+        </label>
+      </div>
+
+      <details class="terms-details advanced-details">
+        <summary>Advanced search</summary>
+        <div class="advanced-grid">
+          <label class="field compact">
+            <span>Match style</span>
+            <select id="match-mode">
+              <option value="balanced">Balanced</option>
+              <option value="strict">Strict sequence</option>
+              <option value="flexible" selected>Flexible</option>
+            </select>
+          </label>
+          <p id="mode-help-text" class="mode-help-text" aria-live="polite"></p>
+        </div>
         <div class="terms-grid">
           <p><strong>Strict sequence:</strong> Your progression must appear in order. Slash chords are normalized (for example, <code>1/3</code> can match <code>1</code>).</p>
           <p><strong>Balanced:</strong> Finds in-order matches and close in-order variants with full progression coverage.</p>
@@ -141,7 +179,6 @@
       <p class="result-detail"></p>
       <p class="result-key"></p>
       <p class="result-progressions"></p>
-      <div class="score-breakdown"></div>
       <div class="flow-list"></div>
     </article>
   </template>

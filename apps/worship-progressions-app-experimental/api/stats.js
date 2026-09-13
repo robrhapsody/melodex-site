@@ -1,4 +1,5 @@
 import {
+  getBpmCoverageStats,
   getCatalogCounts,
   getSupabaseClient,
 } from "./_shared.js"
@@ -11,8 +12,11 @@ export default async function handler(req, res) {
 
   try {
     const supabase = getSupabaseClient()
-    const counts = await getCatalogCounts(supabase)
-    return res.status(200).json({ counts })
+    const [counts, bpmCoverage] = await Promise.all([
+      getCatalogCounts(supabase),
+      getBpmCoverageStats(supabase),
+    ])
+    return res.status(200).json({ counts, bpmCoverage })
   } catch (error) {
     return res.status(500).json({ error: error.message || "Internal server error" })
   }
