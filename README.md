@@ -27,7 +27,7 @@ For a fresh checkout, first run `npm.cmd ci --ignore-scripts` in that app folder
 - UI: `index.html`, `app.js`, `styles.css`; server functions: `api/`.
 - Repository: [robrhapsody/melodex-site](https://github.com/robrhapsody/melodex-site).
 - Website: [Flowset](https://worship-progressions-app-experiment.vercel.app).
-- Step-one integration branch: `codex/flowset-baseline`, combining the previous Flowset branch and `main` without discarding either history.
+- Current source branch: `main`. [PR #1](https://github.com/robrhapsody/melodex-site/pull/1) merged `codex/flowset-baseline`, combining the previous histories without discarding either.
 - Hosting uses Node 24, no framework/build command, and no Git integration as checked September 12. Deployments have been made from the app folder, not the repository root. Pushing a branch does not currently deploy the site.
 
 The September live deployment was created from a working tree with uncommitted changes, so its commit label alone cannot reproduce it. The local HTML, app JavaScript, and stylesheet were compared with live files and match after normalizing line endings. See the checkpoint for the exact deployment identifier and remaining backend provenance limitation.

@@ -31,8 +31,14 @@ Live `index.html`, `app.js`, `styles.css` each returned HTTP200 and match local 
 
 Backend source bytes have not been compared with deployment source. A future clean, reviewed deployment should establish an exact commit-to-production link. Local browser search exercised the current JavaScript API against the existing Supabase database.
 
-## Outstanding at this checkpoint
+## Completion update — resumed September 13, 2026
 
-Publish the baseline branch for review and verify the new GitHub checks. Record the resulting PR and status below before declaring this delivery complete. Main and production remain separate from the baseline branch until integration/deployment. Both related Notion tasks are In Progress until their complete acceptance criteria are met.
+Step-one baseline work is complete. [PR #1](https://github.com/robrhapsody/melodex-site/pull/1) merged into `main` as `3f642a840fe9b72756acd0abf6927823fe0a29e0`. The local checkout is now on main and includes that merge. The former integration branch remains available as history.
 
-After baseline acceptance, next work is confirmed matching correctness fixes, followed by musician-reviewed examples. See the [full reassessment](thread-memory-checkpoint-2026-09-12-flowset-reassessment.md) for the feature reconstruction, discrepancies, risks, and detailed next steps.
+- [Main-branch Flowset checks passed](https://github.com/robrhapsody/melodex-site/actions/runs/34741402055), following the successful branch checks. All 24 existing tests passed locally and in CI.
+- [A subsequent scheduled keepalive passed](https://github.com/robrhapsody/melodex-site/actions/runs/34775660613), in addition to the manual reactivation test. GitHub's existing Pages workflow also ran successfully; that legacy site is separate from the Vercel Flowset app.
+- Local and live `/api/stats` returned identical JSON. Local and live `/api/search?catalog=worship_strict&progression=4%205%206m&limit=3` also returned identical JSON; all four requests returned HTTP200. This is sample behavior parity, not exhaustive backend identity verification.
+- The main Flowset website was not redeployed. Its historical uncommitted-source limitation remains documented above; use a clean revision for the next intended production release.
+- Final results are recorded in the companion Notion checkpoint, and the two step-one tasks are completed. The usage interruption occurred after the merge; recovery finished status/documentation updates without repeating implementation or browser tests.
+
+Next is step two: correct minor-key representation and missing-metadata handling, then retrieval/input edge cases, and evaluate real musician-reviewed song examples. Step two has not started. See the [full reassessment](thread-memory-checkpoint-2026-09-12-flowset-reassessment.md) for the feature reconstruction, discrepancies, risks, and detailed next steps.
