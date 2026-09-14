@@ -43,7 +43,7 @@
 
       <p class="search-description">
         Flowset analyzes chord progressions using the Nashville Number System to find songs with similar harmonic movement.
-        You can search with Nashville numbers or plain chord letters, and Flowset will normalize the progression across keys before matching sections like chorus, verse, or bridge.
+        You can search with Nashville numbers or plain chord letters, and Flowset will normalize the progression across major keys (using the relative major for minor songs) before matching sections like chorus, verse, or bridge.
       </p>
 
       <div class="control-row">
@@ -104,20 +104,20 @@
         <label class="field compact chord-key-field">
           <span>Chord key</span>
           <select id="chord-display-key" disabled>
-            <option value="song" selected>Song key</option>
+            <option value="song" selected>Relative major key</option>
             <option value="input">Input key</option>
-            <option value="C">Key of C / Am</option>
-            <option value="Db">Key of Db / Bbm</option>
-            <option value="D">Key of D / Bm</option>
-            <option value="Eb">Key of Eb / Cm</option>
-            <option value="E">Key of E / C#m</option>
-            <option value="F">Key of F / Dm</option>
-            <option value="F#">Key of F# / D#m</option>
-            <option value="G">Key of G / Em</option>
-            <option value="Ab">Key of Ab / Fm</option>
-            <option value="A">Key of A / F#m</option>
-            <option value="Bb">Key of Bb / Gm</option>
-            <option value="B">Key of B / G#m</option>
+            <option value="C">Key of C</option>
+            <option value="Db">Key of Db</option>
+            <option value="D">Key of D</option>
+            <option value="Eb">Key of Eb</option>
+            <option value="E">Key of E</option>
+            <option value="F">Key of F</option>
+            <option value="F#">Key of F#</option>
+            <option value="G">Key of G</option>
+            <option value="Ab">Key of Ab</option>
+            <option value="A">Key of A</option>
+            <option value="Bb">Key of Bb</option>
+            <option value="B">Key of B</option>
           </select>
         </label>
       </div>
