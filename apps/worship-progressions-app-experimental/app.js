@@ -180,7 +180,7 @@
   }
 
   function songMetaText(song) {
-    const bpmText = Number.isFinite(Number(song.bpm)) ? `${Math.round(Number(song.bpm))} BPM` : "";
+    const bpmText = song.bpm != null && String(song.bpm).trim() !== "" && Number.isFinite(Number(song.bpm)) && Number(song.bpm) > 0 ? `${Math.round(Number(song.bpm))} BPM` : "Tempo unknown";
     return [song.primaryCatalogLabel, song.year, bpmText].filter(Boolean).join(" - ");
   }
 

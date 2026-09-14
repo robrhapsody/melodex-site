@@ -1,11 +1,16 @@
 import test from "node:test"
 import assert from "node:assert/strict"
+import { createClient } from "@supabase/supabase-js"
+import { convertNashvilleToChords } from "./progression-input.js"
 
 import { buildProgressionMatch } from "./progression-matching.js"
 import {
   resolveAudioFeelScore,
   resolveBpmScore,
   resolveMatchQualityPercent,
+  fetchSectionRowsByVersionIds,
+  fetchCandidateRows,
+  sectionEntriesByVersionId,
 } from "./search.js"
 import {
   buildCandidateSearchAnchors,
@@ -13,6 +18,46 @@ import {
   findBestReferenceTargetMatch,
   pickBestReferenceCandidate,
 } from "./search-matching.js"
+
+test("minor-song reference and candidate queries use relative-major numbers throughout", async () => {
+  const requests = []
+  const supabase = createClient("https://example.supabase.co", "test-anon-key", {
+    global: { fetch: async (input) => {
+      const url = new URL(input)
+      requests.push(url)
+      assert.match(url.searchParams.get("select"), /nashville:nashville_relative_major/)
+      assert.equal(url.searchParams.has("nashville"), false)
+      // Temple's stored relative-major chorus, exposed with the API's Nashville alias.
+      return new Response(JSON.stringify([{ id: 1, song_version_id: 190, name_raw: "chorus_1",
+        section_type_estimated: "chorus", position_index: 1, nashville: "4 6m 5 2m" }]), {
+        headers: { "Content-Type": "application/json" },
+      })
+    } },
+  })
+  const rows = await fetchSectionRowsByVersionIds(supabase, [190], "chorus")
+  const entries = sectionEntriesByVersionId(rows).get(190)
+  assert.equal(entries[0].text, "4 6m 5 2m")
+  const targets = buildReferenceTargets(entries, "chorus", "")
+  const candidates = await fetchCandidateRows(supabase, targets, "chorus", "strict", "4", 3)
+  assert.ok(requests.some(url => url.searchParams.getAll("nashville_relative_major").some(v => v.startsWith("ilike."))))
+  assert.ok(buildProgressionMatch(targets[0].progression, candidates[0].nashville, "strict"))
+  assert.equal(convertNashvilleToChords(candidates[0].nashville, "C"), "F Am G Dm")
+})
+
+test("missing, blank and invalid tempos never receive a tempo-match bonus", () => {
+  for (const missing of [null, undefined, "", " ", 0, -1, false, NaN, Infinity]) {
+    assert.equal(resolveBpmScore(missing, missing).bpmScore, 0)
+    assert.equal(resolveBpmScore(100, missing).bpmDifference, null)
+    assert.equal(resolveBpmScore(missing, 100).bpmRelationship, "")
+  }
+  assert.equal(resolveBpmScore("100", 100).bpmScore, 30)
+})
+
+test("null audio features do not invent gentle feel or similarity", () => {
+  const absent = { energy: null, danceability: null }
+  const result = resolveAudioFeelScore(absent, absent, "gentle")
+  assert.equal(result.audioFeelScore, 0)
+})
 
 test("matches passing-chord variants through the core progression path", () => {
   const match = buildProgressionMatch("4 5 6m 4", "4 6m 5 6m 4", "flexible")

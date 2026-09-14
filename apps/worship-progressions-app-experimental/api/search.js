@@ -204,9 +204,9 @@ async function fetchSectionRowsByVersionIds(supabase, versionIds, section = "all
   for (const idChunk of chunkArray(uniqueIds, 250)) {
     let query = supabase
       .from("section_occurrences")
-      .select("id,song_version_id,name_raw,section_type_estimated,nashville,position_index")
+      .select("id,song_version_id,name_raw,section_type_estimated,nashville:nashville_relative_major,position_index")
       .in("song_version_id", idChunk)
-      .not("nashville", "is", null)
+      .not("nashville_relative_major", "is", null)
 
     if (section !== "all") {
       query = query.eq("section_type_estimated", section)
@@ -223,8 +223,8 @@ async function fetchSectionRowsByVersionIds(supabase, versionIds, section = "all
 function createCandidateSectionQuery(supabase, section, sectionTypes = null) {
   let query = supabase
     .from("section_occurrences")
-    .select("id,song_version_id,name_raw,section_type_estimated,nashville,position_index")
-    .not("nashville", "is", null)
+    .select("id,song_version_id,name_raw,section_type_estimated,nashville:nashville_relative_major,position_index")
+    .not("nashville_relative_major", "is", null)
     .order("id", { ascending: true })
 
   if (section !== "all") {
@@ -278,7 +278,7 @@ async function fetchCandidateRows(
         if (rowLimit <= 0) break
 
         const { data, error } = await createCandidateSectionQuery(supabase, section, sectionTypes)
-          .ilike("nashville", anchor)
+          .ilike("nashville_relative_major", anchor)
           .range(offset, offset + rowLimit - 1)
         if (error) throw error
 
@@ -302,7 +302,7 @@ async function fetchCandidateRows(
   }
 
   const { data, error } = await createCandidateSectionQuery(supabase, section, sectionTypes)
-    .ilike("nashville", `%${escapeForIlike(fallbackToken)}%`)
+    .ilike("nashville_relative_major", `%${escapeForIlike(fallbackToken)}%`)
     .range(0, 1999)
   if (error) throw error
   return data || []
@@ -380,11 +380,19 @@ function resolveWorshipScore(song, primaryCatalogLabel) {
 }
 
 function toFiniteNumber(value) {
+  if (value == null || (typeof value !== "number" && typeof value !== "string") || String(value).trim() === "") return null
   const number = Number(value)
   return Number.isFinite(number) ? number : null
 }
 
+function toTempo(value) {
+  const number = toFiniteNumber(value)
+  return number !== null && number > 0 ? number : null
+}
+
 function resolveBpmScore(referenceBpm, candidateBpm) {
+  referenceBpm = toTempo(referenceBpm)
+  candidateBpm = toTempo(candidateBpm)
   if (!Number.isFinite(referenceBpm) || !Number.isFinite(candidateBpm)) {
     return { bpmScore: 0, bpmDifference: null, bpmRelationship: "" }
   }
@@ -653,7 +661,7 @@ export default async function handler(req, res) {
       const resolver = buildCatalogResolverFromMemberships(membershipRows)
       const audioFeatureRows = await fetchAudioFeatureRowsBySongIds(supabase, [reference.song.id])
       referenceAudioFeatures = audioFeatureRows[0] || null
-      referenceTempo = Number(referenceAudioFeatures?.tempo)
+      referenceTempo = toTempo(referenceAudioFeatures?.tempo)
       if (!Number.isFinite(referenceTempo)) referenceTempo = null
 
       referenceSongPayload = {
@@ -703,13 +711,9 @@ export default async function handler(req, res) {
     const candidateSongIds = Array.from(new Set(
       versionRows.map((row) => Number(row.song_id)).filter(Number.isFinite)
     ))
-    const shouldFetchCandidateAudio = Number.isFinite(referenceTempo)
-      || Number.isFinite(toFiniteNumber(referenceAudioFeatures?.energy))
-      || Number.isFinite(toFiniteNumber(referenceAudioFeatures?.danceability))
-      || feelPreference !== "any"
     const [songRows, audioFeatureRows, membershipRows] = await Promise.all([
       fetchSongRowsByIds(supabase, candidateSongIds),
-      shouldFetchCandidateAudio ? fetchAudioFeatureRowsBySongIds(supabase, candidateSongIds) : Promise.resolve([]),
+      fetchAudioFeatureRowsBySongIds(supabase, candidateSongIds),
       getMembershipRowsForSongIds(supabase, candidateSongIds),
     ])
 
@@ -740,7 +744,7 @@ export default async function handler(req, res) {
       const primaryCatalogLabel = catalogResolver.getPrimaryLabel(song.id)
       const worshipRelevanceScore = resolveWorshipScore(song, primaryCatalogLabel)
       const candidateAudioFeatures = audioFeaturesBySongId.get(songId) || null
-      const candidateTempo = Number(candidateAudioFeatures?.tempo)
+      const candidateTempo = toTempo(candidateAudioFeatures?.tempo)
       const { bpmScore, bpmDifference, bpmRelationship } = resolveBpmScore(referenceTempo, candidateTempo)
       const { audioFeelScore, audioFeelLabel, candidateFeel } = resolveAudioFeelScore(
         referenceAudioFeatures,
@@ -836,6 +840,9 @@ export default async function handler(req, res) {
 }
 
 export {
+  fetchSectionRowsByVersionIds,
+  fetchCandidateRows,
+  sectionEntriesByVersionId,
   resolveAudioFeelScore,
   resolveBpmScore,
   resolveMatchQualityPercent,

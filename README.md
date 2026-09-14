@@ -49,4 +49,6 @@ The `Supabase Keepalive` workflow checks the public database-backed stats endpoi
 
 ## Resume safely
 
+Latest: [relative-major and tempo checkpoint](docs/thread-memory-checkpoint-2026-09-13-relative-major-tempo.md), including the major-only display decision, tested branch changes, and remaining tempo-source work.
+
 Read the [step-one checkpoint](docs/thread-memory-checkpoint-2026-09-12-step-1.md) first, then the [full reassessment](docs/thread-memory-checkpoint-2026-09-12-flowset-reassessment.md) for product intent, implemented features, unfinished work, and known correctness defects.
