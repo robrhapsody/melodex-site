@@ -15,6 +15,7 @@ Branch: `codex/relative-major-tempo`. Changes are local/branch work, not a produ
 - Candidate audio metadata is fetched for progression-only searches as well. Previously those searches hid known tempos and displayed 0 BPM. Missing values now display Tempo unknown.
 - 27 tests pass, including a Supabase query-contract/Temple regression and missing-metadata regressions. Syntax checks pass. Browser verified major-only controls and a `4 5 6m` search returning 15 songs with actual tempos, zero 0-BPM results. Local Temple chorus search returns key C and relative-major numbers.
 - Existing raw-dataset/import scripts, unrelated local files, and cloud data remain untouched. Candidate-retrieval caps and the third-reference-target issue remain separate work.
+- A supplementary reference search for missing-tempo song88953 did not finish during the verification window and was cancelled. Missing-tempo scoring is covered by unit tests, but this case needs investigation before claiming comprehensive search performance verification.
 
 ## Tempo audit and plan
 

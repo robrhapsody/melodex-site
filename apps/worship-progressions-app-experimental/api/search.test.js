@@ -246,4 +246,3 @@ test("all-sections song search keeps transition-capable sections and excludes ve
   assert.equal(targets[1].baseName, "pre_chorus")
   assert.equal(targets[2].baseName, "chorus")
 })
-
